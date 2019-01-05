@@ -57,7 +57,7 @@ class CreateJson():
                 version = None
                 try:
                     content = repo.get_file_contents(location)
-                    content = version.decoded_content.decode().split('\n')
+                    content = content.decoded_content.decode().split('\n')
                     for line in content:
                         if '_version_' in line or 'VERSION' in line:
                             version = line.split(' = ')[1]
