@@ -1,45 +1,31 @@
 """Create json with information for custom_updater."""
 from json import dumps
-import requests
 from github import Github
-import customjson.defaults as DEFAULT
+import customjson.defaults as ORG
 
 
 class CreateJson():
     """Class for json creation."""
 
-    def __init__(self, token, user, repo, repos, reuse, json_file, push):
+    def __init__(self, token, repo, push):
         """Initilalize."""
         self.token = token
-        self.user = user
         self.repo = repo
-        self.repos = repos
-        self.reuse = reuse
-        self.json_file = json_file
         self.push = push
         self.github = Github(token)
 
     def component(self):
         """Generate json for components."""
-        if self.user is None:
-            self.user = DEFAULT.COMPONENT_USER
+        org = 'custom-components'
+        data = {}
         if self.repo is None:
-            self.repo = DEFAULT.REPO
-        if self.json_file is None:
-            self.json_file = DEFAULT.JSON_FILE
-        if self.reuse:
-            info = DEFAULT.REUSE.format(self.user, self.repo, self.json_file)
-            data = requests.get(info).json()
-        else:
-            data = {}
-        if self.repos is None:
             repos = []
-            for repo in list(self.github.get_user(self.user).get_repos()):
+            for repo in list(self.github.get_user(org).get_repos()):
                 repos.append(repo.name)
-            self.repos = repos
-        for repo in self.repos:
-            repo = self.github.get_repo(self.user + '/' + repo)
-            if repo.name not in DEFAULT.SKIP_REPOS and not repo.archived:
+            self.repo = repos
+        for repo in self.repo:
+            repo = self.github.get_repo(org + '/' + repo)
+            if repo.name not in ORG.SKIP_REPOS and not repo.archived:
                 print("Generating json for repo:", repo.name)
                 name = repo.name
                 updated_at = repo.updated_at.isoformat().split('T')[0]
@@ -54,6 +40,7 @@ class CreateJson():
                     except Exception:
                         location = 'custom_components/{}/__init__.py'
                         location = location.format(name)
+
                 version = None
                 try:
                     content = repo.get_file_contents(location)
@@ -64,13 +51,18 @@ class CreateJson():
                             break
                 except Exception:
                     version = None
+
+                try:
+                    changelog = list(repo.get_releases())[0].html_url
+                except Exception:
+                    changelog = ORG.VISIT.format(org, name)
+
                 updated_at = updated_at
                 version = version
                 local_location = '/{}'.format(location)
-                remote_location = DEFAULT.REUSE.format(self.user, name,
-                                                       location)
-                visit_repo = DEFAULT.VISIT.format(self.user, name)
-                changelog = DEFAULT.CHANGELOG.format(self.user, name)
+                remote_location = ORG.REUSE.format(org, name, location)
+                visit_repo = ORG.VISIT.format(org, name)
+                changelog = ORG.CHANGELOG.format(org, name)
 
                 data[name] = {}
                 data[name]['updated_at'] = updated_at
