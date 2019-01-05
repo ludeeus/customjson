@@ -18,7 +18,7 @@ class CreateJson():
         """Generate json for components."""
         org = 'custom-components'
         data = {}
-        if self.repo is None:
+        if not self.repo:
             repos = []
             for repo in list(self.github.get_user(org).get_repos()):
                 repos.append(repo.name)
@@ -37,7 +37,7 @@ class CreateJson():
                     location = 'custom_components/{}.py'.format(name)
                     try:
                         repo.get_file_contents(location)
-                    except Exception:
+                    except Exception:  # pylint: disable=W0703
                         location = 'custom_components/{}/__init__.py'
                         location = location.format(name)
 
@@ -49,12 +49,12 @@ class CreateJson():
                         if '_version_' in line or 'VERSION' in line:
                             version = line.split(' = ')[1]
                             break
-                except Exception:
+                except Exception:  # pylint: disable=W0703
                     version = None
 
                 try:
                     changelog = list(repo.get_releases())[0].html_url
-                except Exception:
+                except Exception:  # pylint: disable=W0703
                     changelog = ORG.VISIT.format(org, name)
 
                 updated_at = updated_at
