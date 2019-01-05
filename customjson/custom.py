@@ -37,9 +37,9 @@ class CreateJson():
                 repos.append(repo.name)
             self.repos = repos
         for repo in self.repos:
-            if repo not in DEFAULT.SKIP_REPOS:
+            repo = self.github.get_repo(self.user + '/' + repo)
+            if repo.name not in DEFAULT.SKIP_REPOS and not repo.archived:
                 print("Generating json for repo:", repo)
-                repo = self.github.get_repo(self.user + '/' + repo)
                 name = repo.name
                 updated_at = repo.updated_at.isoformat().split('T')[0]
                 platform = True if len(name.split('.')) > 1 else False
