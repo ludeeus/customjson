@@ -16,9 +16,11 @@ class CreateJson():
 
     def component(self):
         """Generate json for components."""
+        pushable = False
         org = 'custom-components'
         data = {}
         if not self.repo:
+            pushable = True
             repos = []
             for repo in list(self.github.get_user(org).get_repos()):
                 repos.append(repo.name)
@@ -71,11 +73,14 @@ class CreateJson():
                 data[name]['remote_location'] = remote_location
                 data[name]['visit_repo'] = visit_repo
                 data[name]['changelog'] = changelog
-        if self.push:
-            print("push it!")
 
+        data = dumps(data, indent=4, sort_keys=True)
+        if self.push and pushable:
+            repo = self.github.get_repo(org + '/information')
+            sha = repo.get_contents('repos.json').sha
+            print(repo.update_file('repos.json', ORG.COMMIT_MSG, data, sha))
         else:
-            print(dumps(data, indent=4, sort_keys=True))
+            print(data)
 
     def card(self):
         """Generate json for components."""
