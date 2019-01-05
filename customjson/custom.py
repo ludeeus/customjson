@@ -52,11 +52,12 @@ class CreateJson():
                     repo.get_file_contents(location)
                 except:
                     location = 'custom_components/{}/__init__.py'.format(name)
+            version = None
             try:
-                version = repo.get_file_contents(location)
-                version = version.decoded_content.decode().split('\n')
-                for line in version:
-                    if '__version__' in line or 'VERSION' in line:
+                content = repo.get_file_contents(location)
+                content = version.decoded_content.decode().split('\n')
+                for line in content:
+                    if '_version_' in line or 'VERSION' in line:
                         version = line.split(' = ')[1]
                         break
             except:
