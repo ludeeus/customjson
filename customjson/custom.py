@@ -37,6 +37,7 @@ class CreateJson():
                 repos.append(repo.name)
             self.repos = repos
         for repo in self.repos:
+            print("Generating json for repo:", repo)
             repo = self.github.get_repo(self.user + '/' + repo)
             name = repo.name
             updated_at = repo.updated_at.isoformat().split('T')[0]
@@ -68,7 +69,7 @@ class CreateJson():
             print("push it!")
 
         else:
-            print(dumps(data))
+            print(dumps(data, indent=4, sort_keys=True))
 
     def card(self):
         "Generate json for components."
