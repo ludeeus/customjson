@@ -4,6 +4,7 @@ import requests
 from github import Github
 import customjson.defaults as DEFAULT
 
+
 class CreateJson():
     """Class for json creation."""
 
@@ -19,7 +20,7 @@ class CreateJson():
         self.github = Github(token)
 
     def component(self):
-        "Generate json for components."
+        """Generate json for components."""
         if self.user is None:
             self.user = DEFAULT.COMPONENT_USER
         if self.repo is None:
@@ -42,8 +43,7 @@ class CreateJson():
                 print("Generating json for repo:", repo.name)
                 name = repo.name
                 updated_at = repo.updated_at.isoformat().split('T')[0]
-                platform = True if len(name.split('.')) > 1 else False
-                if platform:
+                if len(name.split('.')) > 1:
                     location = 'custom_components/{}/{}.py'
                     location = location.format(name.split('.')[0],
                                                name.split('.')[1])
@@ -86,5 +86,5 @@ class CreateJson():
             print(dumps(data, indent=4, sort_keys=True))
 
     def card(self):
-        "Generate json for components."
+        """Generate json for components."""
         print("Not implemented")
