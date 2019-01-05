@@ -46,12 +46,12 @@ class CreateJson():
                 if platform:
                     location = 'custom_components/{}/{}.py'
                     location = location.format(name.split('.')[0],
-                                            name.split('.')[1])
+                                               name.split('.')[1])
                 else:
                     location = 'custom_components/{}.py'.format(name)
                     try:
                         repo.get_file_contents(location)
-                    except:
+                    except Exception:
                         location = 'custom_components/{}/__init__.py'
                         location = location.format(name)
                 version = None
@@ -62,7 +62,7 @@ class CreateJson():
                         if '_version_' in line or 'VERSION' in line:
                             version = line.split(' = ')[1]
                             break
-                except:
+                except Exception:
                     version = None
                 updated_at = updated_at
                 version = version
