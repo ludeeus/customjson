@@ -62,7 +62,7 @@ class CreateJson():
                 local_location = '/{}'.format(location)
                 remote_location = ORG.REUSE.format(org, name, location)
                 visit_repo = ORG.VISIT.format(org, name)
-                changelog = ORG.CHANGELOG.format(org, name)
+                changelog = changelog
 
                 data[name] = {}
                 data[name]['updated_at'] = updated_at
