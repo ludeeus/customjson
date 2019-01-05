@@ -37,6 +37,7 @@ class CreateJson():
                 repos.append(repo.name)
             self.repos = repos
         for repo in self.repos:
+            repo = self.github.get_repo(self.user + '/' + repo)
             name = repo.name
             updated_at = repo.updated_at.isoformat().split('T')[0]
             platform = True if len(name.split('.')) > 1 else False
