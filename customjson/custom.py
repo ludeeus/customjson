@@ -37,45 +37,48 @@ class CreateJson():
                 repos.append(repo.name)
             self.repos = repos
         for repo in self.repos:
-            print("Generating json for repo:", repo)
-            repo = self.github.get_repo(self.user + '/' + repo)
-            name = repo.name
-            updated_at = repo.updated_at.isoformat().split('T')[0]
-            platform = True if len(name.split('.')) > 1 else False
-            if platform:
-                location = 'custom_components/{}/{}.py'
-                location = location.format(name.split('.')[0],
-                                           name.split('.')[1])
-            else:
-                location = 'custom_components/{}.py'.format(name)
-                try:
-                    repo.get_file_contents(location)
-                except:
-                    location = 'custom_components/{}/__init__.py'.format(name)
-            version = None
-            try:
-                content = repo.get_file_contents(location)
-                content = version.decoded_content.decode().split('\n')
-                for line in content:
-                    if '_version_' in line or 'VERSION' in line:
-                        version = line.split(' = ')[1]
-                        break
-            except:
+            if repo not in DEFAULT.SKIP_REPOS:
+                print("Generating json for repo:", repo)
+                repo = self.github.get_repo(self.user + '/' + repo)
+                name = repo.name
+                updated_at = repo.updated_at.isoformat().split('T')[0]
+                platform = True if len(name.split('.')) > 1 else False
+                if platform:
+                    location = 'custom_components/{}/{}.py'
+                    location = location.format(name.split('.')[0],
+                                            name.split('.')[1])
+                else:
+                    location = 'custom_components/{}.py'.format(name)
+                    try:
+                        repo.get_file_contents(location)
+                    except:
+                        location = 'custom_components/{}/__init__.py'
+                        location = location.format(name)
                 version = None
-            updated_at = updated_at
-            version = version
-            local_location = '/{}'.format(location)
-            remote_location = DEFAULT.REUSE.format(self.user, name, location)
-            visit_repo = DEFAULT.VISIT.format(self.user, name)
-            changelog = DEFAULT.CHANGELOG.format(self.user, name)
+                try:
+                    content = repo.get_file_contents(location)
+                    content = version.decoded_content.decode().split('\n')
+                    for line in content:
+                        if '_version_' in line or 'VERSION' in line:
+                            version = line.split(' = ')[1]
+                            break
+                except:
+                    version = None
+                updated_at = updated_at
+                version = version
+                local_location = '/{}'.format(location)
+                remote_location = DEFAULT.REUSE.format(self.user, name,
+                                                       location)
+                visit_repo = DEFAULT.VISIT.format(self.user, name)
+                changelog = DEFAULT.CHANGELOG.format(self.user, name)
 
-            data[name] = {}
-            data[name]['updated_at'] = updated_at
-            data[name]['version'] = version
-            data[name]['local_location'] = local_location
-            data[name]['remote_location'] = remote_location
-            data[name]['visit_repo'] = visit_repo
-            data[name]['changelog'] = changelog
+                data[name] = {}
+                data[name]['updated_at'] = updated_at
+                data[name]['version'] = version
+                data[name]['local_location'] = local_location
+                data[name]['remote_location'] = remote_location
+                data[name]['visit_repo'] = visit_repo
+                data[name]['changelog'] = changelog
         if self.push:
             print("push it!")
 
