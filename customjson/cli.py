@@ -6,7 +6,7 @@ import click
 @click.option('--token', '-T', help='GitHub access_token.')
 @click.option('--user', '-U', default=None, help='Addon name.')
 @click.option('--repo', '-R', default=None, help='Repos.')
-@click.option('--repos', '-R', default=None, help='Repos.')
+@click.option('--repos', '-R', default=None, multiple=True, help='Repos.')
 @click.option('--reuse', is_flag=True, help="")
 @click.option('--json_file', is_flag=True, help="Print more stuff.")
 @click.option('--push', is_flag=True, help="Publish a release.")
