@@ -52,8 +52,17 @@ class CreateJson():
                     repo.get_file_contents(location)
                 except:
                     location = 'custom_components/{}/__init__.py'.format(name)
-
+            try:
+                version = repo.get_file_contents(location)
+                version = version.decoded_content.decode().split('\n')
+                for line in version:
+                    if '__version__' in line or 'VERSION' in line:
+                        version = line.split(' = ')[1]
+                        break
+            except:
+                version = None
             updated_at = updated_at
+            version = version
             local_location = '/{}'.format(location)
             remote_location = DEFAULT.REUSE.format(self.user, name, location)
             visit_repo = DEFAULT.VISIT.format(self.user, name)
@@ -61,6 +70,7 @@ class CreateJson():
 
             data[name] = {}
             data[name]['updated_at'] = updated_at
+            data[name]['version'] = version
             data[name]['local_location'] = local_location
             data[name]['remote_location'] = remote_location
             data[name]['visit_repo'] = visit_repo
