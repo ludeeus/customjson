@@ -88,7 +88,7 @@ class CreateJson():
                 for name in old:
                     data[name] = old[name]
                 for name in new:
-                    data[name] = old[name]
+                    data[name] = new[name]
             target = 'repos.json'
             repo = self.github.get_repo(org + '/information')
             sha = repo.get_contents(target).sha
