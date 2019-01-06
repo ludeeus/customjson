@@ -52,7 +52,7 @@ jobs:
       deploy:
         - provider: script
           skip_cleanup: true
-          script: if [ "$TRAVIS_EVENT_TYPE" == "cron" ]; then customjson --token "$GHTOKEN" --mode card --push; fi
+          script: customjson --token "$GHTOKEN" --mode card --push
           on:
             branch: master
     - stage: push
@@ -63,7 +63,7 @@ jobs:
       deploy:
         - provider: script
           skip_cleanup: true
-          script: if [ "$TRAVIS_EVENT_TYPE" == "cron" ]; then customjson --token "$GHTOKEN" --mode card --push; fi
+          script: customjson --token "$GHTOKEN" --mode card --push
           on:
             branch: master
 
