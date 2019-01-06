@@ -1,6 +1,7 @@
 """Create json with information for custom_updater."""
 from json import dumps
 import random
+import requests
 from github import Github
 import customjson.defaults as ORG
 
@@ -12,16 +13,15 @@ class CreateJson():
         """Initilalize."""
         self.token = token
         self.repo = repo
+        self.selected = False if repo is None else True
         self.push = push
         self.github = Github(token)
 
     def component(self):
         """Generate json for components."""
-        pushable = False
         org = 'custom-components'
         data = {}
         if not self.repo:
-            pushable = True
             repos = []
             for repo in list(self.github.get_user(org).get_repos()):
                 repos.append(repo.name)
@@ -79,25 +79,28 @@ class CreateJson():
 
         data = dumps(data, indent=4, sort_keys=True)
         if self.push:
-            if pushable:
-                target = 'repos.json'
-                repo = self.github.get_repo(org + '/information')
-                sha = repo.get_contents(target).sha
-                msg = random.choice(ORG.COMMIT)
-                print(repo.update_file(target, msg, data, sha))
-            else:
-                print("You can not spesify --repo when pushing.")
+            if self.selected:
+                url = "https://raw.githubusercontent.com/"
+                url = url + org + "/information/master/repos.json"
+                old = requests.get(url).json()
+                new = data
+                data = {}
+                for name in old:
+                    data[name] = old[name]
+                for name in new:
+                    data[name] = old[name]
+            target = 'repos.json'
+            repo = self.github.get_repo(org + '/information')
+            sha = repo.get_contents(target).sha
+            msg = random.choice(ORG.COMMIT)
+            print(repo.update_file(target, msg, data, sha))
         else:
             print(data)
 
     def card(self):
         """Generate json for cards."""
-        if not self.repo:
-            pushable = True
-        else:
-            pushable = False
+        org = 'custom-cards'
         data = {}
-
         cards = self.cards_org()
         for card in cards:
             data[card] = cards[card]
@@ -112,15 +115,21 @@ class CreateJson():
 
         data = dumps(data, indent=4, sort_keys=True)
         if self.push:
-            if pushable:
-                org = 'custom-cards'
-                target = 'repos.json'
-                repo = self.github.get_repo(org + '/information')
-                sha = repo.get_contents(target).sha
-                msg = random.choice(ORG.COMMIT)
-                print(repo.update_file(target, msg, data, sha))
-            else:
-                print("You can not spesify --repo when pushing.")
+            if self.selected:
+                url = "https://raw.githubusercontent.com/"
+                url = url + org + "/information/master/repos.json"
+                old = requests.get(url).json()
+                new = data
+                data = {}
+                for name in old:
+                    data[name] = old[name]
+                for name in new:
+                    data[name] = old[name]
+            target = 'repos.json'
+            repo = self.github.get_repo(org + '/information')
+            sha = repo.get_contents(target).sha
+            msg = random.choice(ORG.COMMIT)
+            print(repo.update_file(target, msg, data, sha))
         else:
             print(data)
 
