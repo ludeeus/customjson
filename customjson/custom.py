@@ -63,7 +63,7 @@ class CreateJson():
 
     def card(self):
         """Generate json for cards."""
-        from customjson.cards.org import get_data as org
+        import customjson.cards.org.get_data as org
         from customjson.cards.ciotlosm import get_data as ciotlosm
         from customjson.cards.maykar import get_data as maykar
         from customjson.cards.thomasloven import get_data as thomasloven
