@@ -2,6 +2,7 @@ language: python
 stages:
   - linting
   - install
+  - push
   - deploy
 
 jobs:
@@ -41,6 +42,37 @@ jobs:
       script:
         - python setup.py install
         - python -c"from customjson.custom import CreateJson"
+
+      # Test install the module
+    - stage: push
+      install: pip install -U pip setuptools wheel
+      name: "Push custom-components"
+      python: "3.6"
+      script: skip
+      deploy:
+        - provider: script
+          script: python setup.py install
+          on:
+            branch: master
+        - provider: script
+          script: customjson --token $GHTOKEN --mode component --push
+          on:
+            branch: master
+
+    - stage: push
+      install: pip install -U pip setuptools wheel
+      name: "Push custom-cards"
+      python: "3.6"
+      script: skip
+      deploy:
+        - provider: script
+          script: python setup.py install
+          on:
+            branch: master
+        - provider: script
+          script: customjson --token $GHTOKEN --mode card --push
+          on:
+            branch: master
 
     # Deploy to PyPi if all tests pass and change was done on master.
     - stage: deploy
