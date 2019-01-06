@@ -93,9 +93,10 @@ class CreateJson():
             repo = self.github.get_repo(org + '/information')
             sha = repo.get_contents(target).sha
             msg = random.choice(ORG.COMMIT)
+            print(data)
             print(repo.update_file(target, msg, data, sha))
         else:
-            print(data = dumps(data, indent=4, sort_keys=True))
+            print(dumps(data, indent=4, sort_keys=True))
 
     def card(self):
         """Generate json for cards."""
@@ -129,9 +130,10 @@ class CreateJson():
             repo = self.github.get_repo(org + '/information')
             sha = repo.get_contents(target).sha
             msg = random.choice(ORG.COMMIT)
+            print(data)
             print(repo.update_file(target, msg, data, sha))
         else:
-            print(data = dumps(data, indent=4, sort_keys=True))
+            print(dumps(data, indent=4, sort_keys=True))
 
     def cards_org(self):
         """Generate json form custom-cards org."""
