@@ -49,24 +49,21 @@ jobs:
       name: "Push custom-components"
       python: "3.6"
       script: skip
-      if: $TRAVIS_EVENT_TYPE == cron
       deploy:
         - provider: script
           skip_cleanup: true
-          script: customjson --token "$GHTOKEN" --mode component --push
+          script: if [ "$TRAVIS_EVENT_TYPE" == "cron" ]; then customjson --token "$GHTOKEN" --mode card --push; fi
           on:
             branch: master
-
     - stage: push
       install: pip install -U pip setuptools wheel customjson
       name: "Push custom-cards"
       python: "3.6"
       script: skip
-      if: $TRAVIS_EVENT_TYPE == cron
       deploy:
         - provider: script
           skip_cleanup: true
-          script: customjson --token "$GHTOKEN" --mode card --push
+          script: if [ "$TRAVIS_EVENT_TYPE" == "cron" ]; then customjson --token "$GHTOKEN" --mode card --push; fi
           on:
             branch: master
 
