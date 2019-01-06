@@ -1,5 +1,6 @@
 """Create json with information for custom_updater."""
 from json import dumps
+import random
 from github import Github
 import customjson.defaults as ORG
 
@@ -82,7 +83,8 @@ class CreateJson():
                 target = 'repos.json'
                 repo = self.github.get_repo(org + '/information')
                 sha = repo.get_contents(target).sha
-                print(repo.update_file(target, ORG.COMMIT_MSG, data, sha))
+                msg = random.choice(ORG.COMMIT)
+                print(repo.update_file(target, msg, data, sha))
             else:
                 print("You can not spesify --repo when pushing.")
         else:
@@ -115,7 +117,8 @@ class CreateJson():
                 target = 'repos.json'
                 repo = self.github.get_repo(org + '/information')
                 sha = repo.get_contents(target).sha
-                print(repo.update_file(target, ORG.COMMIT_MSG, data, sha))
+                msg = random.choice(ORG.COMMIT)
+                print(repo.update_file(target, msg, data, sha))
             else:
                 print("You can not spesify --repo when pushing.")
         else:
