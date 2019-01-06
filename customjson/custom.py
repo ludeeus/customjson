@@ -50,7 +50,7 @@ class CreateJson():
             data = json.dumps(data, indent=4, sort_keys=True)
             print(repo.update_file(target, msg, data, sha))
         else:
-            print(json.dumps(new, indent=4, sort_keys=True))
+            print(json.dumps(data, indent=4, sort_keys=True))
 
     def card(self):
         """Generate json for cards."""
@@ -90,4 +90,4 @@ class CreateJson():
             data = json.dumps(data, indent=4, sort_keys=True)
             print(repo.update_file(target, msg, data, sha))
         else:
-            print(json.dumps(new, indent=4, sort_keys=True))
+            print(json.dumps(data, indent=4, sort_keys=True))
