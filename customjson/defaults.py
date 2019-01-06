@@ -34,7 +34,7 @@ COMMIT = ["a few bits tried to escape, but we caught them",
           "Test commit. Please ignore",
           "This is my code. My code is amazing."
           "This is why the cat shouldn't sit on my keyboard.",
-          "workaround for ant being a pile of fail",]
+          "workaround for ant being a pile of fail"]
 
 """
 Commit msg's from https://whatthecommit.com/
