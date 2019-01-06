@@ -1,5 +1,5 @@
 """Create json with information for custom_updater."""
-from json import dumps
+import json
 import random
 from github import Github
 import customjson.defaults as ORG
@@ -76,19 +76,25 @@ class CreateJson():
                 data[name]['visit_repo'] = visit_repo
                 data[name]['changelog'] = changelog
 
-        data = dumps(data, indent=4, sort_keys=True)
-
         if self.push:
-            if not self.selected:
-                target = 'repos.json'
-                repo = self.github.get_repo(org + '/information')
-                sha = repo.get_contents(target).sha
-                msg = random.choice(ORG.COMMIT)
-                print(repo.update_file(target, msg, data, sha))
-            else:
-                print("--repo was defined, --push not possible")
+            target = 'repos.json'
+            repo = self.github.get_repo(org + '/information')
+            repos_json = repo.get_contents(target)
+            sha = repos_json.sha
+            msg = random.choice(ORG.COMMIT)
+            if self.selected:
+                old = json.loads(repos_json.decoded_content.decode())
+                new = data
+                data = {}
+                for item in old:
+                    data[item] = old[item]
+                for item in new:
+                    data[item] = new[item]
+                print(json.dumps(new, indent=4, sort_keys=True))
+            data = json.dumps(data, indent=4, sort_keys=True)
+            print(repo.update_file(target, msg, data, sha))
         else:
-            print(data)
+            print(json.dumps(new, indent=4, sort_keys=True))
 
     def card(self):
         """Generate json for cards."""
@@ -106,19 +112,25 @@ class CreateJson():
         for card in cards:
             data[card] = cards[card]
 
-        data = dumps(data, indent=4, sort_keys=True)
-
         if self.push:
-            if not self.selected:
-                target = 'repos.json'
-                repo = self.github.get_repo(org + '/information')
-                sha = repo.get_contents(target).sha
-                msg = random.choice(ORG.COMMIT)
-                print(repo.update_file(target, msg, data, sha))
-            else:
-                print("--repo was defined, --push not possible")
+            target = 'repos.json'
+            repo = self.github.get_repo(org + '/information')
+            repos_json = repo.get_contents(target)
+            sha = repos_json.sha
+            msg = random.choice(ORG.COMMIT)
+            if self.selected:
+                old = json.loads(repos_json.decoded_content.decode())
+                new = data
+                data = {}
+                for item in old:
+                    data[item] = old[item]
+                for item in new:
+                    data[item] = new[item]
+                print(json.dumps(new, indent=4, sort_keys=True))
+            data = json.dumps(data, indent=4, sort_keys=True)
+            print(repo.update_file(target, msg, data, sha))
         else:
-            print(data)
+            print(json.dumps(new, indent=4, sort_keys=True))
 
     def cards_org(self):
         """Generate json form custom-cards org."""
