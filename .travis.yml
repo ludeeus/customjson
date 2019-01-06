@@ -45,31 +45,27 @@ jobs:
 
       # Test install the module
     - stage: push
-      install: pip install -U pip setuptools wheel
+      install: pip install -U pip setuptools wheel customjson
       name: "Push custom-components"
       python: "3.6"
       script: skip
+      if: $TRAVIS_EVENT_TYPE == cron
       deploy:
         - provider: script
-          script: python setup.py install
-          on:
-            branch: master
-        - provider: script
+          skip_cleanup: true
           script: customjson --token $GHTOKEN --mode component --push
           on:
             branch: master
 
     - stage: push
-      install: pip install -U pip setuptools wheel
+      install: pip install -U pip setuptools wheel customjson
       name: "Push custom-cards"
       python: "3.6"
       script: skip
+      if: $TRAVIS_EVENT_TYPE == cron
       deploy:
         - provider: script
-          script: python setup.py install
-          on:
-            branch: master
-        - provider: script
+          skip_cleanup: true
           script: customjson --token $GHTOKEN --mode card --push
           on:
             branch: master
