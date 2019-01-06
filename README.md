@@ -7,7 +7,7 @@ _Create json with information for custom_updater._
 **Require Python version 3.5.3+**
 
 ```bash
-pip install customjson
+python3 -m pip install -U customjson
 ```
 
 ### Example
