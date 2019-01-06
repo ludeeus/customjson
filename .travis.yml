@@ -45,22 +45,24 @@ jobs:
 
       # Test install the module
     - stage: push
-      install: pip install -U pip setuptools wheel
+      install: pip install -U pip setuptools wheel customjson
       name: "Push custom-components"
       python: "3.6"
-      script: python setup.py install
+      script: skip
       deploy:
         - provider: script
+          skip_cleanup: true
           script: customjson --token "$GHTOKEN" --mode card --push
           on:
             branch: master
     - stage: push
-      install: pip install -U pip setuptools wheel
+      install: pip install -U pip setuptools wheel customjson
       name: "Push custom-cards"
       python: "3.6"
-      script: python setup.py install
+      script: skip
       deploy:
         - provider: script
+          skip_cleanup: true
           script: customjson --token "$GHTOKEN" --mode card --push
           on:
             branch: master
