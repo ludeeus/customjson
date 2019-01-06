@@ -70,7 +70,7 @@ class CreateJson():
 
                 data[name] = {}
                 data[name]['updated_at'] = updated_at
-                data[name]['version'] = version
+                data[name]['version'] = version.replace("'", "")
                 data[name]['local_location'] = local_location
                 data[name]['remote_location'] = remote_location
                 data[name]['visit_repo'] = visit_repo
@@ -87,9 +87,15 @@ class CreateJson():
                 new = data
                 data = {}
                 for item in old:
-                    data[item] = old[item]
+                    data[item] = {}
+                    for subitem in old[item]:
+                        new_value = old[item][subitem].replace("'", "")
+                        data[item][subitem] = new_value
                 for item in new:
-                    data[item] = new[item]
+                    data[item] = {}
+                    for subitem in new[item]:
+                        new_value = new[item][subitem].replace("'", "")
+                        data[item][subitem] = new_value
                 print(json.dumps(new, indent=4, sort_keys=True))
             data = json.dumps(data, indent=4, sort_keys=True)
             print(repo.update_file(target, msg, data, sha))
