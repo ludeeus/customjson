@@ -56,6 +56,8 @@ class CreateJson():
 
                 try:
                     changelog = list(repo.get_releases())[0].html_url
+                    if 'untagged' in list(repo.get_releases())[0].name:
+                        changelog = ORG.VISIT.format(org, name)
                 except Exception:  # pylint: disable=W0703
                     changelog = ORG.VISIT.format(org, name)
 
@@ -75,10 +77,14 @@ class CreateJson():
                 data[name]['changelog'] = changelog
 
         data = dumps(data, indent=4, sort_keys=True)
-        if self.push and pushable:
-            repo = self.github.get_repo(org + '/information')
-            sha = repo.get_contents('repos.json').sha
-            print(repo.update_file('repos.json', ORG.COMMIT_MSG, data, sha))
+        if self.push:
+            if pushable:
+                target = 'repos.json'
+                repo = self.github.get_repo(org + '/information')
+                sha = repo.get_contents(target).sha
+                print(repo.update_file(target, ORG.COMMIT_MSG, data, sha))
+            else:
+                print("You can not spesify --repo when pushing.")
         else:
             print(data)
 
