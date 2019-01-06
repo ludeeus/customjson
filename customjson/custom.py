@@ -93,7 +93,7 @@ class CreateJson():
             repo = self.github.get_repo(org + '/information')
             sha = repo.get_contents(target).sha
             msg = random.choice(ORG.COMMIT)
-            print(new)
+            print(dumps(new, indent=4, sort_keys=True))
             print(repo.update_file(target, msg, data, sha))
         else:
             print(dumps(data, indent=4, sort_keys=True))
@@ -130,7 +130,7 @@ class CreateJson():
             repo = self.github.get_repo(org + '/information')
             sha = repo.get_contents(target).sha
             msg = random.choice(ORG.COMMIT)
-            print(new)
+            print(dumps(new, indent=4, sort_keys=True))
             print(repo.update_file(target, msg, data, sha))
         else:
             print(dumps(data, indent=4, sort_keys=True))
