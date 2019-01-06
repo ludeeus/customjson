@@ -2,6 +2,7 @@
 import json
 import random
 from github import Github
+from github.GithubException import UnknownObjectException
 import customjson.defaults as ORG
 
 
@@ -48,7 +49,14 @@ class CreateJson():
                         data[item][subitem] = new_value
                 print(json.dumps(new, indent=4, sort_keys=True))
             data = json.dumps(data, indent=4, sort_keys=True)
-            print(repo.update_file(target, msg, data, sha))
+            try:
+                print(repo.update_file(target, msg, data, sha))
+            except UnknownObjectException:
+                message = "You do not have premissions to push to {}/{}"
+                print(message.format(organisation + '/information'))
+            except Exception as error:  # pylint: disable=W0703
+                print("Something went horrible wrong :(")
+                print(error)
         else:
             print(json.dumps(data, indent=4, sort_keys=True))
 
@@ -88,6 +96,13 @@ class CreateJson():
                     data[item] = new[item]
                 print(json.dumps(new, indent=4, sort_keys=True))
             data = json.dumps(data, indent=4, sort_keys=True)
-            print(repo.update_file(target, msg, data, sha))
+            try:
+                print(repo.update_file(target, msg, data, sha))
+            except UnknownObjectException:
+                message = "You do not have premissions to push to {}/{}"
+                print(message.format(organisation + '/information'))
+            except Exception as error:  # pylint: disable=W0703
+                print("Something went horrible wrong :(")
+                print(error)
         else:
             print(json.dumps(data, indent=4, sort_keys=True))

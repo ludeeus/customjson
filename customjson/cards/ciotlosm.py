@@ -17,11 +17,13 @@ def get_data(github, selected_repos):
     for repo in repos:
         try:
             name = repo
-            print("Generating json for repo:", name)
 
             version = ciotlosm.get_file_contents(name + '/VERSION')
             version = version.decoded_content.decode()
             version = version.split()[0]
+
+            # This line has to start here, due to the validation.
+            print("Generating json for repo:", name)
 
             visit_repo = VISIT.format('ciotlosm', 'custom-lovelace')
             visit_repo = visit_repo + '/tree/master/' + name

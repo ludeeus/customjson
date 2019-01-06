@@ -6,12 +6,14 @@ def get_data(github, selected_repos):
     """Generate json form custom-components org."""
     org = 'custom-components'
     data = {}
-    if not selected_repos:
-        repos = []
+    repos = []
+    if selected_repos:
+        for repo in selected_repos:
+            repos.append(repo)
+    else:
         for repo in list(github.get_user(org).get_repos()):
             repos.append(repo.name)
-        selected_repos = repos
-    for repo in selected_repos:
+    for repo in repos:
         repo = github.get_repo(org + '/' + repo)
         if repo.name not in SKIP_REPOS and not repo.archived:
             print("Generating json for repo:", repo.name)
