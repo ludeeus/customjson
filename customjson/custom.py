@@ -13,7 +13,7 @@ class CreateJson():
         """Initilalize."""
         self.token = token
         self.repo = repo
-        self.selected = bool(repo is None)
+        self.selected = repo is not None
         self.push = push
         self.github = Github(token)
 
@@ -93,7 +93,7 @@ class CreateJson():
             repo = self.github.get_repo(org + '/information')
             sha = repo.get_contents(target).sha
             msg = random.choice(ORG.COMMIT)
-            print(data)
+            print(new)
             print(repo.update_file(target, msg, data, sha))
         else:
             print(dumps(data, indent=4, sort_keys=True))
@@ -130,7 +130,7 @@ class CreateJson():
             repo = self.github.get_repo(org + '/information')
             sha = repo.get_contents(target).sha
             msg = random.choice(ORG.COMMIT)
-            print(data)
+            print(new)
             print(repo.update_file(target, msg, data, sha))
         else:
             print(dumps(data, indent=4, sort_keys=True))
