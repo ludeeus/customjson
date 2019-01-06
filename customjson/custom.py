@@ -13,7 +13,7 @@ class CreateJson():
         """Initilalize."""
         self.token = token
         self.repo = repo
-        self.selected = False if repo is None else True
+        self.selected = bool(repo is None)
         self.push = push
         self.github = Github(token)
 
