@@ -37,7 +37,7 @@ def get_data(github, selected_repos):
                 content = content.decoded_content.decode().split('\n')
                 for line in content:
                     if '_version_' in line or 'VERSION' in line:
-                        version = line.split(' = ')[1]
+                        version = line.split(' = ')[1].replace("'", "")
                         break
             except Exception:  # pylint: disable=W0703
                 version = None
@@ -58,7 +58,7 @@ def get_data(github, selected_repos):
 
             data[name] = {}
             data[name]['updated_at'] = updated_at
-            data[name]['version'] = version.replace("'", "")
+            data[name]['version'] = version
             data[name]['local_location'] = local_location
             data[name]['remote_location'] = remote_location
             data[name]['visit_repo'] = visit_repo
