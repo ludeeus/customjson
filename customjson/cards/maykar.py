@@ -12,6 +12,8 @@ def get_data(github, selected_repos):
         for repo in selected_repos:
             if repo in all_repos:
                 repos.append(repo)
+    else:
+        repos = all_repos
     for repo in repos:
         try:
             repo = github.get_repo(org + '/' + repo)
