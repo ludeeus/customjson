@@ -31,7 +31,8 @@ param | alias | description
 `--token` | `-T` | An GitHub `access_token` with `repo` permissions.
 `--repo` | `-R` | The repo you want to show info for, can be added multiple times, is optional.
 `--push` | `-P` | Push a new `repos.json` file to the information repo.
-`--json_file` | `-M` | Must be `card` or `component`.
+`--mode` | `-M` | Must be `card` or `component`.
+`--version` | `-V` | Print the installed version.
 
 ***
 
