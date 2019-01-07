@@ -5,7 +5,7 @@ from github import Github
 from github.GithubException import UnknownObjectException
 import customjson.defaults as ORG
 
-VERSION = '1.1.3'
+VERSION = '1.1.4'
 
 
 class CreateJson():
@@ -126,19 +126,20 @@ class CreateJson():
         else:
             print(json.dumps(data, indent=4, sort_keys=True))
 
-
-
     def customjson_update_pending(self):
         """Check version for this tool."""
         update_pending = False
+        version = VERSION
         repo = self.github.get_repo('ludeeus/customjson')
         releases = list(repo.get_releases())
-        release = releases[0].tag_name
-        if 'untagged' in release:
-            release = releases[1].tag_name
-        else:
-            release = None
-        if release:
-            if release != VERSION:
-                update_pending = True
+        for release in releases:
+            version = release.tag_name
+            if version is None:
+                pass
+            elif 'untagged' in version:
+                pass
+            else:
+                break
+        if version != VERSION:
+            update_pending = True
         return update_pending
