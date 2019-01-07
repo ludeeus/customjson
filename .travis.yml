@@ -52,7 +52,7 @@ jobs:
       deploy:
         - provider: script
           skip_cleanup: true
-          script: customjson --token "$GHTOKEN" --mode card --push
+          script: customjson --token "$GHTOKEN" --mode component --push
           on:
             branch: master
     - stage: push

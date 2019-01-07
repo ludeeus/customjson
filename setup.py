@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
     LONG = fh.read()
 setuptools.setup(
     name="customjson",
-    version="1.1.1",
+    version="1.1.2",
     author="Joakim Sorensen",
     author_email="ludeeus@gmail.com",
     description="",
