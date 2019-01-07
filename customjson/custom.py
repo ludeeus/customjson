@@ -5,6 +5,8 @@ from github import Github
 from github.GithubException import UnknownObjectException
 import customjson.defaults as ORG
 
+VERSION = '1.1.3'
+
 
 class CreateJson():
     """Class for json creation."""
@@ -20,6 +22,8 @@ class CreateJson():
     def component(self):
         """Generate json for components."""
         from customjson.components.org import get_data as org
+
+        update_pending = self.customjson_update_pending()
 
         organisation = 'custom-components'
         data = {}
@@ -51,7 +55,10 @@ class CreateJson():
                 print(json.dumps(new, indent=4, sort_keys=True))
             data = json.dumps(data, indent=4, sort_keys=True)
             try:
-                print(repo.update_file(target, msg, data, sha))
+                if not update_pending:
+                    print(repo.update_file(target, msg, data, sha))
+                else:
+                    print("You need to update 'customjson' before pushing.")
             except UnknownObjectException:
                 message = "You do not have premissions to push to {}/{}"
                 print(message.format(organisation + '/information'))
@@ -67,6 +74,8 @@ class CreateJson():
         from customjson.cards.ciotlosm import get_data as ciotlosm
         from customjson.cards.maykar import get_data as maykar
         from customjson.cards.thomasloven import get_data as thomasloven
+
+        update_pending = self.customjson_update_pending()
 
         organisation = 'custom-cards'
         data = {}
@@ -104,7 +113,10 @@ class CreateJson():
                 print(json.dumps(new, indent=4, sort_keys=True))
             data = json.dumps(data, indent=4, sort_keys=True)
             try:
-                print(repo.update_file(target, msg, data, sha))
+                if not update_pending:
+                    print(repo.update_file(target, msg, data, sha))
+                else:
+                    print("You need to update 'customjson' before pushing.")
             except UnknownObjectException:
                 message = "You do not have premissions to push to {}/{}"
                 print(message.format(organisation + '/information'))
@@ -113,3 +125,20 @@ class CreateJson():
                 print(error)
         else:
             print(json.dumps(data, indent=4, sort_keys=True))
+
+
+
+    def customjson_update_pending(self):
+        """Check version for this tool."""
+        update_pending = False
+        repo = self.github.get_repo('ludeeus/customjson')
+        releases = list(repo.get_releases())
+        release = releases[0].tag_name
+        if 'untagged' in release:
+            release = releases[1].tag_name
+        else:
+            release = None
+        if release:
+            if release != VERSION:
+                update_pending = True
+        return update_pending
