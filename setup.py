@@ -1,13 +1,12 @@
 """Setup configuration."""
 import setuptools
-from customjson.custom import VERSION
-
+from customjson.version import __version__
 
 with open("README.md", "r") as fh:
     LONG = fh.read()
 setuptools.setup(
     name="customjson",
-    version=VERSION,
+    version=__version__,
     author="Joakim Sorensen",
     author_email="ludeeus@gmail.com",
     description="",

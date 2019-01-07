@@ -3,9 +3,7 @@ import json
 import random
 from github import Github
 from github.GithubException import UnknownObjectException
-import customjson.defaults as ORG
-
-VERSION = '1.1.4'
+from customjson.defaults import COMMIT
 
 
 class CreateJson():
@@ -37,7 +35,7 @@ class CreateJson():
             repo = self.github.get_repo(organisation + '/information')
             repos_json = repo.get_contents(target)
             sha = repos_json.sha
-            msg = random.choice(ORG.COMMIT)
+            msg = random.choice(COMMIT)
             if self.selected:
                 old = json.loads(repos_json.decoded_content.decode())
                 new = data
@@ -101,7 +99,7 @@ class CreateJson():
             repo = self.github.get_repo(organisation + '/information')
             repos_json = repo.get_contents(target)
             sha = repos_json.sha
-            msg = random.choice(ORG.COMMIT)
+            msg = random.choice(COMMIT)
             if self.selected:
                 old = json.loads(repos_json.decoded_content.decode())
                 new = data
@@ -128,8 +126,9 @@ class CreateJson():
 
     def customjson_update_pending(self):
         """Check version for this tool."""
+        from customjson.version import __version__
         update_pending = False
-        version = VERSION
+        version = __version__
         repo = self.github.get_repo('ludeeus/customjson')
         releases = list(repo.get_releases())
         for release in releases:
@@ -140,6 +139,6 @@ class CreateJson():
                 pass
             else:
                 break
-        if version != VERSION:
+        if version != __version__:
             update_pending = True
         return update_pending
