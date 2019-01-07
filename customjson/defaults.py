@@ -1,6 +1,6 @@
 """Default values."""
 REUSE = 'https://raw.githubusercontent.com/{}/{}/master/{}'
-SKIP_REPOS = ['information']
+SKIP_REPOS = ['information', 'sensor.untapped']
 VISIT = 'https://github.com/{}/{}'
 
 COMMIT = ["a few bits tried to escape, but we caught them",

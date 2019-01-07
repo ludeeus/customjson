@@ -43,8 +43,11 @@ def get_data(github, selected_repos):
                 version = None
 
             try:
-                changelog = list(repo.get_releases())[0].html_url
-                if 'untagged' in list(repo.get_releases())[0].name:
+                releases = list(repo.get_releases())
+                changelog = releases[0].html_url
+                if 'untagged' in changelog:
+                    changelog = releases[1].html_url
+                if 'untagged' in changelog:
                     changelog = VISIT.format(org, name)
             except Exception:  # pylint: disable=W0703
                 changelog = VISIT.format(org, name)
