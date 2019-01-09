@@ -23,7 +23,7 @@ def get_data(github, selected_repos):
                 if len(name.split('.')) > 1:
                     location = 'custom_components/{}/{}.py'
                     location = location.format(name.split('.')[0],
-                                            name.split('.')[1])
+                                               name.split('.')[1])
                 else:
                     location = 'custom_components/{}.py'.format(name)
                     try:

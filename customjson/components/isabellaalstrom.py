@@ -1,5 +1,5 @@
 """Generate json form isabellaalstrom."""
-from customjson.defaults import REUSE, VISIT, SKIP_REPOS
+from customjson.defaults import REUSE, VISIT
 
 
 def get_isabellaalstrom(github, selected_repos):
