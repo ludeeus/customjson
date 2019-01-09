@@ -19,7 +19,7 @@ def get_data(github, selected_repos):
             if 'lovelace-' in repo.name:
                 name = repo.name.replace('lovelace-', '')
                 fullname = repo.name
-                print("Generating json for repo:", name)
+                print("Generating json for:", "{}/{}".format(org, name))
 
                 updated_at = repo.updated_at.isoformat().split('T')[0]
 

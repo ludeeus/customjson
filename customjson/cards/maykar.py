@@ -18,7 +18,7 @@ def get_data(github, selected_repos):
         try:
             repo = github.get_repo(org + '/' + repo)
             name = repo.name
-            print("Generating json for repo:", name)
+            print("Generating json for:", "{}/{}".format(org, name))
 
             release = list(repo.get_releases())[0]
 

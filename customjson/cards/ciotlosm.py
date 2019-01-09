@@ -23,7 +23,7 @@ def get_data(github, selected_repos):
             version = version.split()[0]
 
             # This line has to start here, due to the validation.
-            print("Generating json for repo:", name)
+            print("Generating json for:", "{}/{}".format('ciotlosm', name))
 
             visit_repo = VISIT.format('ciotlosm', 'custom-lovelace')
             visit_repo = visit_repo + '/tree/master/' + name
