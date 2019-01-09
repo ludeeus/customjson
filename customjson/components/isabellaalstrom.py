@@ -2,7 +2,7 @@
 from customjson.defaults import REUSE, VISIT, SKIP_REPOS
 
 
-def get_data(github, selected_repos):
+def get_isabellaalstrom(github, selected_repos):
     """Generate json form isabellaalstrom."""
     org = 'isabellaalstrom'
     data = {}

@@ -20,6 +20,7 @@ class CreateJson():
     def component(self):
         """Generate json for components."""
         from customjson.components.org import get_data as org
+        from customjson.components.isabellaalstrom import get_isabellaalstrom
 
         update_pending = self.customjson_update_pending()
 
@@ -27,6 +28,10 @@ class CreateJson():
         data = {}
 
         components = org(self.github, self.repo)
+        for component in components:
+            data[component] = components[component]
+
+        components = get_isabellaalstrom(self.github, self.repo)
         for component in components:
             data[component] = components[component]
 
