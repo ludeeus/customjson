@@ -6,13 +6,14 @@ def get_isabellaalstrom(github, selected_repos):
     """Generate json form isabellaalstrom."""
     org = 'isabellaalstrom'
     data = {}
-    repos = ['sensor.krisinformation']
+    repos = []
+    all_repos = ['sensor.krisinformation']
     if selected_repos:
         for repo in selected_repos:
-            repos.append(repo)
+            if repo in all_repos:
+                repos.append(repo)
     else:
-        for repo in list(github.get_user(org).get_repos()):
-            repos.append(repo.name)
+        repos = all_repos
     for repo in repos:
         try:
             repo = github.get_repo(org + '/' + repo)
