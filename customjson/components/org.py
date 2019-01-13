@@ -61,7 +61,13 @@ def get_data(github, selected_repos):
                 visit_repo = VISIT.format(org, name)
                 changelog = changelog
 
+                authordata = list(repo.get_contributors())[0]
+                author = {}
+                author['login'] = authordata.login
+                author['html_url'] = authordata.html_url
+
                 data[name] = {}
+                data[name]['author'] = author
                 data[name]['updated_at'] = updated_at
                 data[name]['version'] = version
                 data[name]['description'] = description

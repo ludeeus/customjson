@@ -38,7 +38,12 @@ def get_isabellaalstrom(github, selected_repos):
             visit_repo = VISIT.format(org, name)
             changelog = visit_repo
 
+            author = {}
+            author['login'] = 'isabellaalstrom'
+            author['html_url'] = 'https://github.com/isabellaalstrom'
+
             data[name] = {}
+            data[name]['author'] = author
             data[name]['updated_at'] = updated_at
             data[name]['description'] = description
             data[name]['version'] = version
