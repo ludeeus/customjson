@@ -67,6 +67,7 @@ def get_data(github, selected_repos):
                 description = repo.description
                 local_location = '/{}'.format(location)
                 remote_location = REUSE.format(org, name, location)
+                embedded_path_remote = REUSE.format(org, name, embedded_path)
                 visit_repo = VISIT.format(org, name)
                 changelog = changelog
 
@@ -86,6 +87,7 @@ def get_data(github, selected_repos):
                 data[name]['changelog'] = changelog
                 data[name]['embedded'] = embedded
                 data[name]['embedded_path'] = '/{}'.format(embedded_path)
+                data[name]['embedded_path_remote'] = embedded_path_remote
         except Exception:  # pylint: disable=W0703
             pass
     return data

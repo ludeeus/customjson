@@ -61,6 +61,8 @@ def get_isabellaalstrom(github, selected_repos):
             data[name]['changelog'] = changelog
             data[name]['embedded'] = embedded
             data[name]['embedded_path'] = '/{}'.format(embedded_path)
+            data[name]['embedded_path_remote'] = REUSE.format(org, name,
+                                                              embedded_path)
         except Exception:  # pylint: disable=W0703
             pass
     return data
