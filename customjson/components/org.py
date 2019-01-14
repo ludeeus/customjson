@@ -21,11 +21,11 @@ def get_data(github, selected_repos):
                 name = repo.name
                 updated_at = repo.updated_at.isoformat().split('T')[0]
                 if len(name.split('.')) > 1:
-                    location = 'custom_components/{}/{}.py'
-                    location = location.format(name.split('.')[0],
-                                               name.split('.')[1])
-                    embedded_path = location.format(name.split('.')[1],
-                                                    name.split('.')[0])
+                    locationformat = 'custom_components/{}/{}.py'
+                    location = locationformat.format(name.split('.')[0],
+                                                     name.split('.')[1])
+                    embedded_path = locationformat.format(name.split('.')[1],
+                                                          name.split('.')[0])
                 else:
                     location = 'custom_components/{}.py'.format(name)
                     embedded_path = location
@@ -85,7 +85,7 @@ def get_data(github, selected_repos):
                 data[name]['visit_repo'] = visit_repo
                 data[name]['changelog'] = changelog
                 data[name]['embedded'] = embedded
-                data[name]['embedded_path'] = embedded_path
+                data[name]['embedded_path'] = '/{}'.format(embedded_path)
         except Exception:  # pylint: disable=W0703
             pass
     return data
