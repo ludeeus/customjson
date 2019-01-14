@@ -75,6 +75,7 @@ class CreateJson():
         """Generate json for cards."""
         from customjson.cards.org import get_data as org
         from customjson.cards.ciotlosm import get_data as ciotlosm
+        from customjson.cards.isabellaalstrom import get_isabellaalstrom
         from customjson.cards.maykar import get_data as maykar
         from customjson.cards.thomasloven import get_data as thomasloven
 
@@ -88,6 +89,10 @@ class CreateJson():
             data[card] = cards[card]
 
         cards = ciotlosm(self.github, self.repo)
+        for card in cards:
+            data[card] = cards[card]
+
+        cards = get_isabellaalstrom(self.github, self.repo)
         for card in cards:
             data[card] = cards[card]
 
