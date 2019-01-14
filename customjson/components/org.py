@@ -24,8 +24,11 @@ def get_data(github, selected_repos):
                     location = 'custom_components/{}/{}.py'
                     location = location.format(name.split('.')[0],
                                                name.split('.')[1])
+                    embedded_path = location.format(name.split('.')[1],
+                                                    name.split('.')[0])
                 else:
                     location = 'custom_components/{}.py'.format(name)
+                    embedded_path = location
                     try:
                         repo.get_file_contents(location)
                     except Exception:  # pylint: disable=W0703
@@ -53,6 +56,12 @@ def get_data(github, selected_repos):
                 except Exception:  # pylint: disable=W0703
                     changelog = VISIT.format(org, name)
 
+                try:
+                    repo.get_file_contents(embedded_path)
+                    embedded = True
+                except Exception:  # pylint: disable=W0703
+                    embedded = False
+
                 updated_at = updated_at
                 version = version
                 description = repo.description
@@ -75,6 +84,8 @@ def get_data(github, selected_repos):
                 data[name]['remote_location'] = remote_location
                 data[name]['visit_repo'] = visit_repo
                 data[name]['changelog'] = changelog
+                data[name]['embedded'] = embedded
+                data[name]['embedded_path'] = embedded_path
         except Exception:  # pylint: disable=W0703
             pass
     return data
