@@ -46,9 +46,8 @@ def get_data(github, selected_repos):
                 description = jsondata[name].get('description', '')
                 updated_at = jsondata[name]['updated_at']
                 changelog = jsondata[name]['changelog']
-                remote_location = REUSE.format('pnbruckner',
-                                               'homeassistant-config',
-                                               location)
+                remote_location = REUSE.format(
+                    'pnbruckner', 'homeassistant-config', location)
 
                 data[name] = {}
                 data[name]['author'] = author
