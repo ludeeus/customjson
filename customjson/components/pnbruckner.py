@@ -30,10 +30,10 @@ def get_data(github, selected_repos):
                 name = repo
 
                 locationformat = 'custom_components/{}/{}.py'
-                location = locationformat.format(name.split('.')[0],
-                                                 name.split('.')[1])
-                embedded_path = locationformat.format(name.split('.')[1],
-                                                      name.split('.')[0])
+                location = locationformat.format(
+                    name.split('.')[0], name.split('.')[1])
+                embedded_path = locationformat.format(
+                    name.split('.')[1], name.split('.')[0])
 
                 try:
                     pnbruckner.get_file_contents(embedded_path)
