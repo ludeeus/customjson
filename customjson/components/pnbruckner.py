@@ -40,6 +40,7 @@ def get_data(github, selected_repos):
 
                 local_location = '/{}'.format(location)
                 version = jsondata[name]['version']
+                description = jsondata[name].get('description', '')
                 updated_at = jsondata[name]['updated_at']
                 changelog = jsondata[name]['changelog']
                 remote_location = REUSE.format('pnbruckner',
@@ -53,7 +54,7 @@ def get_data(github, selected_repos):
                 data[name] = {}
                 data[name]['author'] = author
                 data[name]['updated_at'] = updated_at
-                data[name]['description'] = ''
+                data[name]['description'] = description
                 data[name]['version'] = version
                 data[name]['local_location'] = local_location
                 data[name]['remote_location'] = remote_location
