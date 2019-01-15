@@ -20,6 +20,9 @@ def get_data(github, selected_repos):
                 if repo not in SKIP_REPOS:
                     repos.append(repo)
 
+        author = {}
+        author['login'] = 'pnbruckner'
+        author['html_url'] = 'https://github.com/pnbruckner'
         visit_repo = 'https://github.com/pnbruckner/homeassistant-config'
 
         for repo in repos:
@@ -46,10 +49,6 @@ def get_data(github, selected_repos):
                 remote_location = REUSE.format('pnbruckner',
                                                'homeassistant-config',
                                                location)
-
-                author = {}
-                author['login'] = 'pnbruckner'
-                author['html_url'] = 'https://github.com/pnbruckner'
 
                 data[name] = {}
                 data[name]['author'] = author
