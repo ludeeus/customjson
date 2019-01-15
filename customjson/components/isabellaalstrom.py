@@ -40,7 +40,7 @@ def get_isabellaalstrom(github, selected_repos):
 
             try:
                 repo.get_file_contents('example.png')
-                image_link = REUSE.format(org, name, '/example.png')
+                image_link = REUSE.format(org, name, 'example.png')
             except Exception:  # pylint: disable=W0703
                 image_link = ''
 
