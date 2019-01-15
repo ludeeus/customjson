@@ -29,6 +29,8 @@ def get_data(github, selected_repos):
             try:
                 name = repo
 
+                print("Generating json for:", "{}/{}".format(user, repo))
+
                 locationformat = 'custom_components/{}/{}.py'
                 location = locationformat.format(
                     name.split('.')[0], name.split('.')[1])
