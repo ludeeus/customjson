@@ -38,6 +38,12 @@ def get_isabellaalstrom(github, selected_repos):
             except Exception:  # pylint: disable=W0703
                 embedded = False
 
+            try:
+                repo.get_file_contents('example.png')
+                image_link = REUSE.format(org, name, '/example.png')
+            except Exception:  # pylint: disable=W0703
+                image_link = ''
+
             updated_at = updated_at
             version = version
             description = repo.description
@@ -54,6 +60,7 @@ def get_isabellaalstrom(github, selected_repos):
             data[name]['author'] = author
             data[name]['updated_at'] = updated_at
             data[name]['description'] = description
+            data[name]['image_link'] = image_link
             data[name]['version'] = version
             data[name]['local_location'] = local_location
             data[name]['remote_location'] = remote_location

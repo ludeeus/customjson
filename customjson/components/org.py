@@ -56,11 +56,18 @@ def get_data(github, selected_repos):
                 except Exception:  # pylint: disable=W0703
                     changelog = VISIT.format(org, name)
 
+
                 try:
                     repo.get_file_contents(embedded_path)
                     embedded = True
                 except Exception:  # pylint: disable=W0703
                     embedded = False
+
+                try:
+                    repo.get_file_contents('example.png')
+                    image_link = REUSE.format(org, name, '/example.png')
+                except Exception:  # pylint: disable=W0703
+                    image_link = ''
 
                 updated_at = updated_at
                 version = version
@@ -81,6 +88,7 @@ def get_data(github, selected_repos):
                 data[name]['updated_at'] = updated_at
                 data[name]['version'] = version
                 data[name]['description'] = description
+                data[name]['image_link'] = image_link
                 data[name]['local_location'] = local_location
                 data[name]['remote_location'] = remote_location
                 data[name]['visit_repo'] = visit_repo
