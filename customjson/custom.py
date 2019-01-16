@@ -73,6 +73,22 @@ class CreateJson():
             except Exception as error:  # pylint: disable=W0703
                 print("Something went horrible wrong :(")
                 print(error)
+            target = 'custom-component-store/V1/data.json'
+            repo = self.github.get_repo('ludeeus/data')
+            repos_json = repo.get_contents(target)
+            sha = repos_json.sha
+            msg = random.choice(COMMIT)
+            try:
+                if not update_pending:
+                    print(repo.update_file(target, msg, data, sha))
+                else:
+                    print("You need to update 'customjson' before pushing.")
+            except UnknownObjectException:
+                message = "You do not have premissions to push to {}/{}"
+                print(message.format(organisation + '/information'))
+            except Exception as error:  # pylint: disable=W0703
+                print("Something went horrible wrong :(")
+                print(error)
         else:
             print(json.dumps(data, indent=4, sort_keys=True))
 
@@ -125,23 +141,6 @@ class CreateJson():
                     data[item] = new[item]
                 print(json.dumps(new, indent=4, sort_keys=True))
             data = json.dumps(data, indent=4, sort_keys=True)
-            try:
-                if not update_pending:
-                    print(repo.update_file(target, msg, data, sha))
-                else:
-                    print("You need to update 'customjson' before pushing.")
-            except UnknownObjectException:
-                message = "You do not have premissions to push to {}/{}"
-                print(message.format(organisation + '/information'))
-            except Exception as error:  # pylint: disable=W0703
-                print("Something went horrible wrong :(")
-                print(error)
-
-            target = 'custom-component-store/V1/data.json'
-            repo = self.github.get_repo('ludeeus/data')
-            repos_json = repo.get_contents(target)
-            sha = repos_json.sha
-            msg = random.choice(COMMIT)
             try:
                 if not update_pending:
                     print(repo.update_file(target, msg, data, sha))
