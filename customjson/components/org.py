@@ -42,6 +42,7 @@ def get_data(github, selected_repos):
                 except Exception:  # pylint: disable=W0703
                     embedded = False
 
+                version = None  ## reset
                 try:
                     if embedded:
                         path = embedded_path
