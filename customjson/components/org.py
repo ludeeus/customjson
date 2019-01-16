@@ -34,6 +34,7 @@ def get_data(github, selected_repos):
                     except Exception:  # pylint: disable=W0703
                         location = 'custom_components/{}/__init__.py'
                         location = location.format(name)
+                        embedded_path = location
 
                 try:
                     repo.get_file_contents(embedded_path)
