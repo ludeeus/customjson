@@ -25,18 +25,26 @@ def get_isabellaalstrom(github, selected_repos):
                                              name.split('.')[1])
             embedded_path = locationformat.format(name.split('.')[1],
                                                   name.split('.')[0])
-            content = repo.get_file_contents(location)
-            content = content.decoded_content.decode().split('\n')
-            for line in content:
-                if '__version__' in line:
-                    version = line.split(' = ')[1].replace("'", "")
-                    break
 
             try:
                 repo.get_file_contents(embedded_path)
                 embedded = True
             except Exception:  # pylint: disable=W0703
                 embedded = False
+
+            try:
+                if embedded:
+                    path = embedded_path
+                else:
+                    path = location
+                content = repo.get_file_contents(path)
+                content = content.decoded_content.decode().split('\n')
+                for line in content:
+                    if '__version__' in line:
+                        version = line.split(' = ')[1].replace("'", "")
+                        break
+            except Exception:  # pylint: disable=W0703
+                version = None
 
             try:
                 repo.get_file_contents('example.png')

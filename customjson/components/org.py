@@ -35,9 +35,18 @@ def get_data(github, selected_repos):
                         location = 'custom_components/{}/__init__.py'
                         location = location.format(name)
 
-                version = None
                 try:
-                    content = repo.get_file_contents(location)
+                    repo.get_file_contents(embedded_path)
+                    embedded = True
+                except Exception:  # pylint: disable=W0703
+                    embedded = False
+
+                try:
+                    if embedded:
+                        path = embedded_path
+                    else:
+                        path = location
+                    content = repo.get_file_contents(path)
                     content = content.decoded_content.decode().split('\n')
                     for line in content:
                         if '_version_' in line or 'VERSION' in line:
@@ -55,12 +64,6 @@ def get_data(github, selected_repos):
                         changelog = VISIT.format(org, name)
                 except Exception:  # pylint: disable=W0703
                     changelog = VISIT.format(org, name)
-
-                try:
-                    repo.get_file_contents(embedded_path)
-                    embedded = True
-                except Exception:  # pylint: disable=W0703
-                    embedded = False
 
                 try:
                     repo.get_file_contents('example.png')
