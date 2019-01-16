@@ -56,7 +56,6 @@ def get_data(github, selected_repos):
                 except Exception:  # pylint: disable=W0703
                     changelog = VISIT.format(org, name)
 
-
                 try:
                     repo.get_file_contents(embedded_path)
                     embedded = True
