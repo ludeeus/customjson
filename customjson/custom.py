@@ -63,7 +63,10 @@ class CreateJson():
             legacy[component] = {}
             legacy[component]['changelog'] = changelog
             legacy[component]['local_location'] = local_location
-            legacy[component]['remote_location'] = remote_location
+            if embedded:
+                legacy[component]['remote_location'] = embedded_path_remote
+            else:
+                legacy[component]['remote_location'] = remote_location
             legacy[component]['updated_at'] = updated_at
             legacy[component]['version'] = version
             legacy[component]['visit_repo'] = visit_repo
