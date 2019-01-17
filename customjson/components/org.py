@@ -26,21 +26,23 @@ def get_data(github, selected_repos):
                                                      name.split('.')[1])
                     embedded_path = locationformat.format(name.split('.')[1],
                                                           name.split('.')[0])
-                else:
-                    location = 'custom_components/{}.py'.format(name)
-                    embedded_path = location
-                    try:
-                        repo.get_file_contents(location)
-                    except Exception:  # pylint: disable=W0703
-                        location = 'custom_components/{}/__init__.py'
-                        location = location.format(name)
-                        embedded_path = location
 
                 try:
                     repo.get_file_contents(embedded_path)
                     embedded = True
                 except Exception:  # pylint: disable=W0703
                     embedded = False
+
+                else:
+                    location = 'custom_components/{}.py'.format(name)
+                    embedded_path = location
+                    embedded = True
+                    try:
+                        repo.get_file_contents(location)
+                    except Exception:  # pylint: disable=W0703
+                        location = 'custom_components/{}/__init__.py'
+                        location = location.format(name)
+                        embedded_path = location
 
                 version = None  # reset
                 try:
