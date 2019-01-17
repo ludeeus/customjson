@@ -20,18 +20,18 @@ def get_data(github, selected_repos):
                 print("Generating json for:", "{}/{}".format(org, repo.name))
                 name = repo.name
                 updated_at = repo.updated_at.isoformat().split('T')[0]
-                if len(name.split('.')) > 1:
+                if '.' in name:
                     locationformat = 'custom_components/{}/{}.py'
                     location = locationformat.format(name.split('.')[0],
                                                      name.split('.')[1])
                     embedded_path = locationformat.format(name.split('.')[1],
                                                           name.split('.')[0])
 
-                try:
-                    repo.get_file_contents(embedded_path)
-                    embedded = True
-                except Exception:  # pylint: disable=W0703
-                    embedded = False
+                    try:
+                        repo.get_file_contents(embedded_path)
+                        embedded = True
+                    except Exception:  # pylint: disable=W0703
+                        embedded = False
 
                 else:
                     location = 'custom_components/{}.py'.format(name)
