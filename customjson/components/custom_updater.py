@@ -6,14 +6,14 @@ from customjson.defaults import REUSE, BLACKLIST
 BASE = 'https://raw.githubusercontent.com/{}/master/'
 JSONFILES = [
     {
-        'repository': 'robmarkcole/Hue-sensors-HASS',
-        'jsonfile': 'custom_updater.json'
+        'repository': 'pnbruckner/homeassistant-config',
+        'jsonfile': 'custom_components.json'
     }
 ]
 
 
 def get_data(github):
-    """Generate json form robmarkcole."""
+    """Generate json form old custom_updater format."""
     data = {}
     try:
         for entry in JSONFILES:
@@ -21,7 +21,7 @@ def get_data(github):
             jsonfile = entry['jsonfile']
             username = repository.split('/')[0]
             reponame = repository.split('/')[1]
-            jsondata = requests.get(BASE + jsonfile).json()
+            jsondata = requests.get(BASE.format(repository)+jsonfile).json()
             components = []
             for component in jsondata:
                 if component not in BLACKLIST:
@@ -30,13 +30,17 @@ def get_data(github):
             for component in components:
                 try:
                     name = component
-                    repo = github.get_repo('robmarkcole/Hue-sensors-HASS')
+                    repo = github.get_repo(repository)
                     print("Generating json for:", "{}/{}".format(
                         repository, name))
 
+                    local_location = jsondata[name]['local_location']
+                    version = jsondata[name]['version']
+                    updated_at = jsondata[name]['updated_at']
+                    changelog = jsondata[name]['changelog']
+                    remote_location = jsondata[name]['remote_location']
+
                     locationformat = 'custom_components/{}/{}.py'
-                    location = locationformat.format(
-                        name.split('.')[0], name.split('.')[1])
                     embedded_path = locationformat.format(
                         name.split('.')[1], name.split('.')[0])
 
@@ -45,13 +49,6 @@ def get_data(github):
                         embedded = True
                     except Exception:  # pylint: disable=W0703
                         embedded = False
-
-                    local_location = '/{}'.format(location)
-                    version = jsondata[name]['version']
-                    updated_at = jsondata[name]['updated_at']
-                    changelog = jsondata[name]['changelog']
-                    remote_location = REUSE.format(
-                        username, reponame, location)
 
                     description = requests.get(remote_location).text
                     description = description.split('\n')
@@ -75,8 +72,8 @@ def get_data(github):
                     data[name]['embedded_path'] = '/{}'.format(embedded_path)
                     data[name]['embedded_path_remote'] = REUSE.format(
                         username, reponame, embedded_path)
-                except Exception:  # pylint: disable=W0703
-                    pass
-    except Exception:  # pylint: disable=W0703
-        pass
+                except Exception as error:  # pylint: disable=W0703
+                    print(error)
+    except Exception as error:  # pylint: disable=W0703
+        print(error)
     return data
