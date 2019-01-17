@@ -69,7 +69,6 @@ def get_isabellaalstrom(github, selected_repos):
             legacy['visit_repo'] = visit_repo
             legacy['changelog'] = changelog
 
-
             data = {
                 'author': {
                     'login': 'isabellaalstrom',
