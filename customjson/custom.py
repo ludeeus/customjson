@@ -27,18 +27,22 @@ class CreateJson():
 
         organisation = 'custom-components'
         data = {}
+        legacy = {}
 
         components = org(self.github, self.repo)
         for component in components:
-            data[component] = components[component]
+            data[component] = components['data'][component]
+            legacy[component] = components['legacy'][component]
 
         components = get_isabellaalstrom(self.github, self.repo)
         for component in components:
-            data[component] = components[component]
+            data[component] = components['data'][component]
+            legacy[component] = components['legacy'][component]
 
         components = pnbruckner(self.github, self.repo)
         for component in components:
-            data[component] = components[component]
+            data[component] = components['data'][component]
+            legacy[component] = components['legacy'][component]
 
         if self.push:
             target = 'repos.json'
@@ -46,25 +50,10 @@ class CreateJson():
             repos_json = repo.get_contents(target)
             sha = repos_json.sha
             msg = random.choice(COMMIT)
-            if self.selected:
-                old = json.loads(repos_json.decoded_content.decode())
-                new = data
-                data = {}
-                for item in old:
-                    data[item] = {}
-                    for subitem in old[item]:
-                        new_value = old[item][subitem].replace("'", "")
-                        data[item][subitem] = new_value
-                for item in new:
-                    data[item] = {}
-                    for subitem in new[item]:
-                        new_value = new[item][subitem].replace("'", "")
-                        data[item][subitem] = new_value
-                print(json.dumps(new, indent=4, sort_keys=True))
-            data = json.dumps(data, indent=4, sort_keys=True)
+            legacy = json.dumps(legacy, indent=4, sort_keys=True)
             try:
                 if not update_pending:
-                    print(repo.update_file(target, msg, data, sha))
+                    print(repo.update_file(target, msg, legacy, sha))
                 else:
                     print("You need to update 'customjson' before pushing.")
             except UnknownObjectException:
@@ -73,6 +62,7 @@ class CreateJson():
             except Exception as error:  # pylint: disable=W0703
                 print("Something went horrible wrong :(")
                 print(error)
+            data = json.dumps(data, indent=4, sort_keys=True)
             target = 'custom-component-store/V1/data.json'
             repo = self.github.get_repo('ludeeus/data')
             repos_json = repo.get_contents(target)
