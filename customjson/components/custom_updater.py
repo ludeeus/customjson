@@ -1,6 +1,6 @@
 """Generate json form old custom_updater format."""
 import requests
-from customjson.defaults import REUSE, BLACKLIST
+from customjson.defaults import REUSE, BLACKLIST, DOMAINS
 
 
 BASE = 'https://raw.githubusercontent.com/{}/master/'
@@ -8,6 +8,10 @@ JSONFILES = [
     {
         'repository': 'pnbruckner/homeassistant-config',
         'jsonfile': 'custom_components.json'
+    },
+    {
+        'repository': 'robmarkcole/Hue-sensors-HASS',
+        'jsonfile': 'custom_updater.json'
     }
 ]
 
@@ -30,6 +34,9 @@ def get_data(github):
             for component in components:
                 try:
                     name = component
+                    if '.' in name:
+                        if name.split('.')[0] not in DOMAINS:
+                            continue
                     repo = github.get_repo(repository)
                     print("Generating json for:", "{}/{}".format(
                         repository, name))

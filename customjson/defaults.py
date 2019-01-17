@@ -1,6 +1,24 @@
 """Default values."""
 REUSE = 'https://raw.githubusercontent.com/{}/{}/master/{}'
-BLACKLIST = ['information', 'sensor.untapped', 'sun']
+BLACKLIST = ['information', 'sun']
+DOMAINS = ['air_quality',
+           'binary_sensor',
+           'camera',
+           'climate',
+           'cover',
+           'device_tracker',
+           'fan',
+           'image_processing',
+           'light',
+           'lock',
+           'media_player',
+           'notify',
+           'remote',
+           'sensor',
+           'switch',
+           'vaccum',
+           'water_heater',
+           'weather']
 VISIT = 'https://github.com/{}/{}'
 
 COMMIT = ["a few bits tried to escape, but we caught them",
