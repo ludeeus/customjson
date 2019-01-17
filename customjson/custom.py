@@ -27,25 +27,58 @@ class CreateJson():
 
         organisation = 'custom-components'
         data = {}
-        legacy = {}
 
         components = org(self.github, self.repo)
-        for component in components['data']:
+        for component in components:
             data[component] = components[component]
-        for component in components['legacy']:
-            legacy[component] = components[component]
 
         components = get_isabellaalstrom(self.github, self.repo)
-        for component in components['data']:
+        for component in components:
             data[component] = components[component]
-        for component in components['legacy']:
-            legacy[component] = components[component]
 
         components = pnbruckner(self.github, self.repo)
-        for component in components['data']:
+        for component in components:
             data[component] = components[component]
-        for component in components['legacy']:
-            legacy[component] = components[component]
+
+        components = data
+        legacy = {}
+        data = {}
+
+        for component in components:
+            changelog = components[component].get('changelog', '')
+            local_location = components[component].get('local_location', '')
+            remote_location = components[component].get('remote_location', '')
+            updated_at = components[component].get('updated_at', '')
+            version = components[component].get('version', '')
+            visit_repo = components[component].get('visit_repo', '')
+            author = components[component].get('author', '')
+            description = components[component].get('description', '')
+            image_link = components[component].get('image_link', '')
+            embedded = components[component].get('embedded', '')
+            embedded_path = components[component].get('embedded_path', '')
+            embedded_path_remote = (
+                components[component].get('embedded_path_remote', ''))
+
+            legacy[component] = {}
+            legacy[component]['changelog'] = changelog
+            legacy[component]['local_location'] = local_location
+            legacy[component]['remote_location'] = remote_location
+            legacy[component]['updated_at'] = updated_at
+            legacy[component]['version'] = version
+            legacy[component]['visit_repo'] = visit_repo
+
+            data[component] = {}
+            data[component]['author'] = author
+            data[component]['version'] = version
+            data[component]['description'] = description
+            data[component]['image_link'] = image_link
+            data[component]['local_location'] = local_location
+            data[component]['remote_location'] = remote_location
+            data[component]['visit_repo'] = visit_repo
+            data[component]['changelog'] = changelog
+            data[component]['embedded'] = embedded
+            data[component]['embedded_path'] = embedded_path
+            data[component]['embedded_path_remote'] = embedded_path_remote
 
         if self.push:
             target = 'repos.json'
@@ -65,12 +98,12 @@ class CreateJson():
             except Exception as error:  # pylint: disable=W0703
                 print("Something went horrible wrong :(")
                 print(error)
-            data = json.dumps(data, indent=4, sort_keys=True)
             target = 'custom-component-store/V1/data.json'
             repo = self.github.get_repo('ludeeus/data')
             repos_json = repo.get_contents(target)
             sha = repos_json.sha
             msg = random.choice(COMMIT)
+            data = json.dumps(data, indent=4, sort_keys=True)
             try:
                 if not update_pending:
                     print(repo.update_file(target, msg, data, sha))
@@ -83,6 +116,7 @@ class CreateJson():
                 print("Something went horrible wrong :(")
                 print(error)
         else:
+            print(json.dumps(legacy, indent=4, sort_keys=True))
             print(json.dumps(data, indent=4, sort_keys=True))
 
     def card(self):

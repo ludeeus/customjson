@@ -10,7 +10,7 @@ def get_data(github, selected_repos):
         pnbruckner = github.get_repo('pnbruckner/homeassistant-config')
         base_raw = 'https://raw.githubusercontent.com/{}/master/'.format(user)
         jsondata = requests.get(base_raw + 'custom_components.json').json()
-        json = {}
+        data = {}
         repos = []
         if selected_repos:
             for repo in selected_repos:
@@ -53,45 +53,21 @@ def get_data(github, selected_repos):
                 description = requests.get(remote_location).text.split('\n')
                 description = description[1] + ' ' + description[2]
 
-                legacy = {}
-                legacy['updated_at'] = updated_at
-                legacy['version'] = version
-                legacy['local_location'] = local_location
-                legacy['remote_location'] = remote_location
-                legacy['visit_repo'] = visit_repo
-                legacy['changelog'] = changelog
-
-                data = {
-                    'author': {
-                        'login': 'pnbruckner',
-                        'url': 'https://github.com/pnbruckner'
-                    },
-                    'repo': repo,
-                    'version': version,
-                    'description': description,
-                    'embedded': embedded,
-                    'url': {
-                        'html': visit_repo,
-                        'changelog': changelog,
-                        'image': '',
-                        'raw': REUSE.format(
-                            'pnbruckner', 'homeassistant-config', ''),
-                    },
-                    'path': {
-                        'local': '/{}'.format(embedded_path),
-                        'remote': REUSE.format(
-                            'pnbruckner', 'homeassistant-config',
-                            embedded_path),
-                        'legacy': {
-                            'local': local_location,
-                            'remote': remote_location
-                        }
-                    }
-                }
-
-                json[name] = {'legacy': legacy, 'data': data}
+                data[name] = {}
+                data[name]['author'] = author
+                data[name]['updated_at'] = updated_at
+                data[name]['description'] = description
+                data[name]['version'] = version
+                data[name]['local_location'] = local_location
+                data[name]['remote_location'] = remote_location
+                data[name]['visit_repo'] = visit_repo
+                data[name]['changelog'] = changelog
+                data[name]['embedded'] = embedded
+                data[name]['embedded_path'] = '/{}'.format(embedded_path)
+                data[name]['embedded_path_remote'] = REUSE.format(
+                    'pnbruckner', 'homeassistant-config', embedded_path)
             except Exception:  # pylint: disable=W0703
                 pass
     except Exception:  # pylint: disable=W0703
         pass
-    return json
+    return data

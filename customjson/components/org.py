@@ -5,7 +5,7 @@ from customjson.defaults import REUSE, VISIT, SKIP_REPOS
 def get_data(github, selected_repos):
     """Generate json form custom-components org."""
     org = 'custom-components'
-    json = {}
+    data = {}
     repos = []
     if selected_repos:
         for repo in selected_repos:
@@ -76,47 +76,30 @@ def get_data(github, selected_repos):
                 updated_at = updated_at
                 version = version
                 description = repo.description
+                local_location = '/{}'.format(location)
                 remote_location = REUSE.format(org, name, location)
+                embedded_path_remote = REUSE.format(org, name, embedded_path)
                 visit_repo = VISIT.format(org, name)
                 changelog = changelog
 
                 authordata = list(repo.get_contributors())[0]
+                author = {}
+                author['login'] = authordata.login
+                author['html_url'] = authordata.html_url
 
-                legacy = {}
-                legacy['updated_at'] = updated_at
-                legacy['version'] = version
-                legacy['local_location'] = '/{}'.format(location)
-                legacy['remote_location'] = remote_location
-                legacy['visit_repo'] = visit_repo
-                legacy['changelog'] = changelog
-
-                data = {
-                    'author': {
-                        'login': authordata.login,
-                        'url': authordata.html_url
-                    },
-                    'repo': repo,
-                    'version': version,
-                    'description': description,
-                    'embedded': embedded,
-                    'url': {
-                        'html': visit_repo,
-                        'changelog': changelog,
-                        'image': image_link,
-                        'raw': REUSE.format(org, name, ''),
-                    },
-                    'path': {
-                        'local': '/{}'.format(embedded_path),
-                        'remote': REUSE.format(org, name, embedded_path),
-                        'legacy': {
-                            'local': '/{}'.format(location),
-                            'remote': REUSE.format(org, name, location)
-                        }
-                    }
-                }
-
-                json[name] = {'legacy': legacy, 'data': data}
+                data[name] = {}
+                data[name]['author'] = author
+                data[name]['updated_at'] = updated_at
+                data[name]['version'] = version
+                data[name]['description'] = description
+                data[name]['image_link'] = image_link
+                data[name]['local_location'] = local_location
+                data[name]['remote_location'] = remote_location
+                data[name]['visit_repo'] = visit_repo
+                data[name]['changelog'] = changelog
+                data[name]['embedded'] = embedded
+                data[name]['embedded_path'] = '/{}'.format(embedded_path)
+                data[name]['embedded_path_remote'] = embedded_path_remote
         except Exception:  # pylint: disable=W0703
             pass
-
-    return json
+    return data
