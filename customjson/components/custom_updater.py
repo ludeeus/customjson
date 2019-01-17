@@ -44,6 +44,20 @@ def get_data(github):
                     embedded_path = locationformat.format(
                         name.split('.')[1], name.split('.')[0])
 
+                    embedded_path_remote = remote_location
+                    try:
+                        domain = name.split('.')[0]
+                        platfrom = name.split('.')[1]
+                        path = remote_location.split('/')
+                        searchstr = "{}/{}".format(path[-2], path[-1])
+                        replacestr = "{}/{}.py".format(platfrom, domain)
+                        embedded_path_remote = remote_location.replace(
+                            searchstr, replacestr)
+                    except Exception:  # pylint: disable=W0703
+                        pass
+
+                    embedded_path = embedded_path_remote.split('/master/')[1]
+
                     try:
                         repo.get_file_contents(embedded_path)
                         embedded = True
