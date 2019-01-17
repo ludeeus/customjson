@@ -30,19 +30,22 @@ class CreateJson():
         legacy = {}
 
         components = org(self.github, self.repo)
-        for component in components:
-            data[component] = components['data'][component]
-            legacy[component] = components['legacy'][component]
+        for component in components['data']:
+            data[component] = components[component]
+        for component in components['legacy']:
+            legacy[component] = components[component]
 
         components = get_isabellaalstrom(self.github, self.repo)
-        for component in components:
-            data[component] = components['data'][component]
-            legacy[component] = components['legacy'][component]
+        for component in components['data']:
+            data[component] = components[component]
+        for component in components['legacy']:
+            legacy[component] = components[component]
 
         components = pnbruckner(self.github, self.repo)
-        for component in components:
-            data[component] = components['data'][component]
-            legacy[component] = components['legacy'][component]
+        for component in components['data']:
+            data[component] = components[component]
+        for component in components['legacy']:
+            legacy[component] = components[component]
 
         if self.push:
             target = 'repos.json'
