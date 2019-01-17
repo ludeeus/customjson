@@ -22,6 +22,8 @@ class CreateJson():
         from customjson.components.org import get_data as org
         from customjson.components.isabellaalstrom import get_isabellaalstrom
         from customjson.components.pnbruckner import get_data as pnbruckner
+        from customjson.components.custom_updater import (
+            get_data as custom_updater)
 
         update_pending = self.customjson_update_pending()
 
@@ -37,6 +39,10 @@ class CreateJson():
             data[component] = components[component]
 
         components = pnbruckner(self.github, self.repo)
+        for component in components:
+            data[component] = components[component]
+
+        components = custom_updater(self.github)
         for component in components:
             data[component] = components[component]
 
