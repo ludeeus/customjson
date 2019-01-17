@@ -1,5 +1,5 @@
 """Generate json form custom-components org."""
-from customjson.defaults import REUSE, VISIT, SKIP_REPOS
+from customjson.defaults import REUSE, VISIT, BLACKLIST
 
 
 def get_data(github, selected_repos):
@@ -16,7 +16,7 @@ def get_data(github, selected_repos):
     for repo in repos:
         try:
             repo = github.get_repo(org + '/' + repo)
-            if repo.name not in SKIP_REPOS and not repo.archived:
+            if repo.name not in BLACKLIST and not repo.archived:
                 print("Generating json for:", "{}/{}".format(org, repo.name))
                 name = repo.name
                 updated_at = repo.updated_at.isoformat().split('T')[0]

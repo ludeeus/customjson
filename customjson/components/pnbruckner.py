@@ -1,6 +1,6 @@
 """Generate json form pnbruckner."""
 import requests
-from customjson.defaults import REUSE, SKIP_REPOS
+from customjson.defaults import REUSE, BLACKLIST
 
 
 def get_data(github, selected_repos):
@@ -17,7 +17,7 @@ def get_data(github, selected_repos):
                 repos.append(repo)
         else:
             for repo in jsondata:
-                if repo not in SKIP_REPOS:
+                if repo not in BLACKLIST:
                     repos.append(repo)
 
         author = {}
