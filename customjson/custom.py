@@ -9,11 +9,11 @@ from customjson.defaults import COMMIT
 class CreateJson():
     """Class for json creation."""
 
-    def __init__(self, token, repo, push):
+    def __init__(self, token, push):
         """Initilalize."""
         self.token = token
-        self.repo = repo
-        self.selected = any(repo)
+        self.repo = None
+        self.selected = None
         self.push = push
         self.github = Github(token)
 
