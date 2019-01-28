@@ -88,8 +88,10 @@ class CreateJson():
             target = 'repos.json'
             repo = self.github.get_repo(organisation + '/information')
             repos_json = repo.get_contents(target)
+            old = json.loads(repos_json.decoded_content.decode())
             sha = repos_json.sha
             msg = random.choice(COMMIT)
+            raw = legacy
             legacy = json.dumps(legacy, indent=4, sort_keys=True)
             if not legacy:
                 print("no data")
@@ -108,15 +110,20 @@ class CreateJson():
             target = 'custom-component-store/V1/data.json'
             repo = self.github.get_repo('ludeeus/data')
             repos_json = repo.get_contents(target)
+            old = json.loads(repos_json.decoded_content.decode())
             sha = repos_json.sha
             msg = random.choice(COMMIT)
+            raw = data
             data = json.dumps(data, indent=4, sort_keys=True)
             if not data:
                 print("no data")
                 return
             try:
                 if not update_pending:
-                    print(repo.update_file(target, msg, data, sha))
+                    if has_changed(old, raw):
+                        print(repo.update_file(target, msg, data, sha))
+                    else:
+                        print('content did not change')
                 else:
                     print("You need to update 'customjson' before pushing.")
             except UnknownObjectException:
@@ -177,13 +184,18 @@ class CreateJson():
                 for item in new:
                     data[item] = new[item]
                 print(json.dumps(new, indent=4, sort_keys=True))
+            raw = data
             data = json.dumps(data, indent=4, sort_keys=True)
             if not data:
                 print("no data")
                 return
             try:
                 if not update_pending:
-                    print(repo.update_file(target, msg, data, sha))
+                    old = json.loads(repos_json.decoded_content.decode())
+                    if has_changed(old, raw):
+                        print(repo.update_file(target, msg, data, sha))
+                    else:
+                        print('content did not change')
                 else:
                     print("You need to update 'customjson' before pushing.")
             except UnknownObjectException:
@@ -213,3 +225,9 @@ class CreateJson():
         if version != __version__:
             update_pending = True
         return update_pending
+
+
+def has_changed(old, new):
+    """Return bool if content has changed."""
+    import dictdiffer
+    return bool(list(dictdiffer.diff(old, new)))
