@@ -91,6 +91,9 @@ class CreateJson():
             sha = repos_json.sha
             msg = random.choice(COMMIT)
             legacy = json.dumps(legacy, indent=4, sort_keys=True)
+            if not legacy:
+                print("no data")
+                return
             try:
                 if not update_pending:
                     print(repo.update_file(target, msg, legacy, sha))
@@ -108,14 +111,17 @@ class CreateJson():
             sha = repos_json.sha
             msg = random.choice(COMMIT)
             data = json.dumps(data, indent=4, sort_keys=True)
+            if not data:
+                print("no data")
+                return
             try:
                 if not update_pending:
                     print(repo.update_file(target, msg, data, sha))
                 else:
                     print("You need to update 'customjson' before pushing.")
             except UnknownObjectException:
-                message = "You do not have premissions to push to {}/{}"
-                print(message.format(organisation + '/information'))
+                message = "You do not have premissions to push to ludeeus/data"
+                print(message)
             except Exception as error:  # pylint: disable=W0703
                 print("Something went horrible wrong :(")
                 print(error)
@@ -172,6 +178,9 @@ class CreateJson():
                     data[item] = new[item]
                 print(json.dumps(new, indent=4, sort_keys=True))
             data = json.dumps(data, indent=4, sort_keys=True)
+            if not data:
+                print("no data")
+                return
             try:
                 if not update_pending:
                     print(repo.update_file(target, msg, data, sha))
