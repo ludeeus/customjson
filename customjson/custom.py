@@ -98,7 +98,10 @@ class CreateJson():
                 return
             try:
                 if not update_pending:
-                    print(repo.update_file(target, msg, legacy, sha))
+                    if has_changed(old, raw):
+                        print(repo.update_file(target, msg, legacy, sha))
+                    else:
+                        print('content did not change')
                 else:
                     print("You need to update 'customjson' before pushing.")
             except UnknownObjectException:
