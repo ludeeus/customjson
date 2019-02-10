@@ -144,7 +144,7 @@ class CreateJson():
         from customjson.cards.org import get_data as org
         from customjson.cards.ciotlosm import get_data as ciotlosm
         from customjson.cards.isabellaalstrom import get_isabellaalstrom
-        #from customjson.cards.maykar import get_data as maykar
+        # from customjson.cards.maykar import get_data as maykar
         from customjson.cards.thomasloven import get_data as thomasloven
 
         update_pending = self.customjson_update_pending()
@@ -164,8 +164,8 @@ class CreateJson():
         for card in cards:
             data[card] = cards[card]
 
-        #cards = maykar(self.github, self.repo)
-        #for card in cards:
+        # cards = maykar(self.github, self.repo)
+        # for card in cards:
         #    data[card] = cards[card]
 
         cards = thomasloven(self.github, self.repo)
