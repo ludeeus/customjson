@@ -1,6 +1,6 @@
 """Default values."""
 REUSE = 'https://raw.githubusercontent.com/{}/{}/master/{}'
-BLACKLIST = ['information', 'sun']
+BLACKLIST = ['information', 'sun', 'custom_updater']
 DOMAINS = ['air_quality',
            'binary_sensor',
            'camera',
