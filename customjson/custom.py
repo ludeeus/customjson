@@ -166,7 +166,7 @@ class CreateJson():
 
         cards = maykar(self.github, self.repo)
         for card in cards:
-           data[card] = cards[card]
+            data[card] = cards[card]
 
         cards = thomasloven(self.github, self.repo)
         for card in cards:
