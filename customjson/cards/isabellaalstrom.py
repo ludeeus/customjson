@@ -34,7 +34,6 @@ def get_isabellaalstrom(github, selected_repos):
             changelog = visit_repo
 
             data[name] = {}
-            data[name]['updated_at'] = updated_at
             data[name]['version'] = version
             data[name]['remote_location'] = remote_location
             data[name]['visit_repo'] = visit_repo

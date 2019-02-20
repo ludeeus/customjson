@@ -35,7 +35,6 @@ def get_data(github, selected_repos):
             remote_location = remote_location + name + '/' + name + '.js'
 
             data[name] = {}
-            data[name]['updated_at'] = None
             data[name]['version'] = version
             data[name]['remote_location'] = remote_location
             data[name]['visit_repo'] = visit_repo

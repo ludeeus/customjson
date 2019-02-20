@@ -34,7 +34,6 @@ def get_data(github, selected_repos):
             changelog = release.html_url
 
             data[name] = {}
-            data[name]['updated_at'] = updated_at
             data[name]['version'] = version
             data[name]['remote_location'] = remote_location
             data[name]['visit_repo'] = visit_repo
