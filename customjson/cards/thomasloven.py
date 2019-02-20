@@ -21,8 +21,6 @@ def get_data(github, selected_repos):
                 fullname = repo.name
                 print("Generating json for:", "{}/{}".format(org, name))
 
-                updated_at = repo.updated_at.isoformat().split('T')[0]
-
                 version = list(repo.get_commits())[0].sha[0:6]
 
                 remote_location = REUSE.format(org, fullname, name)

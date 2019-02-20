@@ -24,8 +24,6 @@ def get_isabellaalstrom(github, selected_repos):
             content = content.decoded_content.decode()
             version = content.split()[0]
 
-            updated_at = repo.updated_at.isoformat().split('T')[0]
-
             remote_location = REUSE.format(org, name, name)
             remote_location = remote_location + '.js'
 

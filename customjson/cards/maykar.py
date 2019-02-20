@@ -22,8 +22,6 @@ def get_data(github, selected_repos):
 
             release = list(repo.get_releases())[0]
 
-            updated_at = repo.updated_at.isoformat().split('T')[0]
-
             version = release.tag_name
 
             remote_location = REUSE.format(org, name, name)

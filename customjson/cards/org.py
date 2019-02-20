@@ -26,8 +26,6 @@ def get_data(github, selected_repos):
 
                 name = repo.name
 
-                updated_at = repo.updated_at.isoformat().split('T')[0]
-
                 version = None
                 try:
                     if release and release.tag_name is not None:
