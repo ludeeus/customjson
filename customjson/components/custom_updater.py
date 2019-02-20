@@ -63,6 +63,8 @@ def get_data(github):
                     except Exception:  # pylint: disable=W0703
                         pass
 
+                    embedded_path = embedded_path_remote.split('/master/')[1]
+
                     try:
                         repo.get_file_contents(embedded_path)
                         embedded = True
