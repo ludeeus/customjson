@@ -1,5 +1,5 @@
 """Generate json form custom-cards org."""
-from customjson.defaults import REUSE, VISIT, BLACKLIST
+from customjson.defaults import REUSE, REUSE_TAG, VISIT, BLACKLIST
 
 
 def get_data(github, selected_repos):
@@ -37,7 +37,11 @@ def get_data(github, selected_repos):
                 except Exception:  # pylint: disable=W0703
                     version = None
 
-                remote_location = REUSE.format(org, name, name)
+                if release:
+                    remote_location = REUSE_TAG.format(
+                        org, name, version, name)
+                else:
+                    remote_location = REUSE.format(org, name, name)
                 remote_location = remote_location + '.js'
 
                 visit_repo = VISIT.format(org, name)

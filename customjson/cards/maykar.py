@@ -1,5 +1,5 @@
 """Generate json form maykar."""
-from customjson.defaults import REUSE, VISIT
+from customjson.defaults import REUSE_TAG, VISIT
 
 
 def get_data(github, selected_repos):
@@ -24,7 +24,7 @@ def get_data(github, selected_repos):
 
             version = release.tag_name
 
-            remote_location = REUSE.format(org, name, name)
+            remote_location = REUSE_TAG.format(org, name, version, name)
             remote_location = remote_location + '.js'
 
             visit_repo = VISIT.format(org, name)
