@@ -19,6 +19,7 @@ def get_data(github, selected_repos):
             if repo.name not in BLACKLIST and not repo.archived:
                 print("Generating json for:", "{}/{}".format(org, repo.name))
                 name = repo.name
+                resources = []
                 updated_at = repo.updated_at.isoformat().split('T')[0]
                 if '.' in name:
                     locationformat = 'custom_components/{}/{}.py'
@@ -99,6 +100,7 @@ def get_data(github, selected_repos):
                 data[name]['remote_location'] = remote_location
                 data[name]['visit_repo'] = visit_repo
                 data[name]['changelog'] = changelog
+                data[name]['resources'] = resources
                 data[name]['embedded'] = embedded
                 data[name]['embedded_path'] = '/{}'.format(embedded_path)
                 data[name]['embedded_path_remote'] = embedded_path_remote

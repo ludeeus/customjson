@@ -53,6 +53,7 @@ class CreateJson():
             version = components[component].get('version', '')
             visit_repo = components[component].get('visit_repo', '')
             author = components[component].get('author', '')
+            resources = components[component].get('resources', [])
             description = components[component].get('description', '')
             image_link = components[component].get('image_link', '')
             embedded = components[component].get('embedded', '')
@@ -70,6 +71,7 @@ class CreateJson():
             legacy[component]['updated_at'] = updated_at
             legacy[component]['version'] = version
             legacy[component]['visit_repo'] = visit_repo
+            legacy[component]['resources'] = resources
 
             data[component] = {}
             data[component]['author'] = author
@@ -80,6 +82,7 @@ class CreateJson():
             data[component]['remote_location'] = remote_location
             data[component]['visit_repo'] = visit_repo
             data[component]['changelog'] = changelog
+            data[component]['resources'] = resources
             data[component]['embedded'] = embedded
             data[component]['embedded_path'] = embedded_path
             data[component]['embedded_path_remote'] = embedded_path_remote

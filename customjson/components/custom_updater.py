@@ -46,6 +46,7 @@ def get_data(github):
                     updated_at = jsondata[name]['updated_at']
                     changelog = jsondata[name]['changelog']
                     remote_location = jsondata[name]['remote_location']
+                    resources = jsondata[name].get('resources', [])
 
                     locationformat = 'custom_components/{}/{}.py'
                     embedded_path = locationformat.format(
@@ -89,6 +90,7 @@ def get_data(github):
                     data[name]['remote_location'] = remote_location
                     data[name]['visit_repo'] = visit_repo
                     data[name]['changelog'] = changelog
+                    data[name]['resources'] = resources
                     data[name]['embedded'] = embedded
                     data[name]['embedded_path'] = '/{}'.format(embedded_path)
                     data[name]['embedded_path_remote'] = REUSE.format(
