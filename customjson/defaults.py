@@ -1,7 +1,7 @@
 """Default values."""
 REUSE = 'https://raw.githubusercontent.com/{}/{}/master/{}'
 REUSE_TAG = 'https://raw.githubusercontent.com/{}/{}/{}/{}'
-BLACKLIST = ['information', 'sun']
+BLACKLIST = ['information', 'sun', 'boilerplate-card', 'blueprint']
 DOMAINS = ['air_quality',
            'binary_sensor',
            'camera',

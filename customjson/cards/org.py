@@ -1,4 +1,5 @@
 """Generate json form custom-cards org."""
+import requests
 from customjson.defaults import REUSE, REUSE_TAG, VISIT, BLACKLIST
 
 
@@ -42,7 +43,16 @@ def get_data(github, selected_repos):
                         org, name, version, name)
                 else:
                     remote_location = REUSE.format(org, name, name)
+
                 remote_location = remote_location + '.js'
+                testfile = requests.get(remote_location)
+
+                if testfile.status_code != 200:
+                    remote_location = remote_location.split(name + '.js')[0]
+                    remote_location = remote_location + 'dist/' + name + '.js'
+                    testfile = requests.get(remote_location)
+                    if testfile.status_code != 200:
+                        continue
 
                 visit_repo = VISIT.format(org, name)
 
