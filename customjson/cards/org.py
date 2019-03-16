@@ -51,8 +51,15 @@ def get_data(github, selected_repos):
                     remote_location = remote_location.split(name + '.js')[0]
                     remote_location = remote_location + 'dist/' + name + '.js'
                     testfile = requests.get(remote_location)
-                    if testfile.status_code != 200:
-                        continue
+
+                if testfile.status_code != 200:
+                    remote_location = remote_location.split(
+                        'dist/' + name + '.js')[0]
+                    remote_location = remote_location + 'src/' + name + '.js'
+                    testfile = requests.get(remote_location)
+
+                if testfile.status_code != 200:
+                    continue
 
                 visit_repo = VISIT.format(org, name)
 
