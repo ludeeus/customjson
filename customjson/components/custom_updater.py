@@ -12,6 +12,10 @@ JSONFILES = [
     {
         'repository': 'robmarkcole/Hue-sensors-HASS',
         'jsonfile': 'custom_updater.json'
+    },
+    {
+        'repository': 'claytonjn/hass-circadian_lighting',
+        'jsonfile': 'custom_updater.json'
     }
 ]
 
