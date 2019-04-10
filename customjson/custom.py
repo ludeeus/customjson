@@ -6,7 +6,7 @@ from github.GithubException import UnknownObjectException
 from customjson.defaults import COMMIT
 
 
-class CreateJson():
+class CreateJson:
     """Class for json creation."""
 
     def __init__(self, token, push):
@@ -21,10 +21,9 @@ class CreateJson():
         """Generate json for components."""
         from customjson.components.org import get_data as org
         from customjson.components.isabellaalstrom import get_isabellaalstrom
-        from customjson.components.custom_updater import (
-            get_data as custom_updater)
+        from customjson.components.custom_updater import get_data as custom_updater
 
-        organisation = 'custom-components'
+        organisation = "custom-components"
         data = {}
 
         components = org(self.github, self.repo)
@@ -44,50 +43,49 @@ class CreateJson():
         data = {}
 
         for component in components:
-            changelog = components[component].get('changelog', '')
-            local_location = components[component].get('local_location', '')
-            remote_location = components[component].get('remote_location', '')
-            updated_at = components[component].get('updated_at', '')
-            version = components[component].get('version', '')
-            visit_repo = components[component].get('visit_repo', '')
-            author = components[component].get('author', '')
-            resources = components[component].get('resources', [])
-            description = components[component].get('description', '')
-            image_link = components[component].get('image_link', '')
-            embedded = components[component].get('embedded', '')
-            embedded_path = components[component].get('embedded_path', '')
-            embedded_path_remote = (
-                components[component].get('embedded_path_remote', ''))
+            changelog = components[component].get("changelog", "")
+            local_location = components[component].get("local_location", "")
+            remote_location = components[component].get("remote_location", "")
+            updated_at = components[component].get("updated_at", "")
+            version = components[component].get("version", "")
+            visit_repo = components[component].get("visit_repo", "")
+            author = components[component].get("author", "")
+            resources = components[component].get("resources", [])
+            description = components[component].get("description", "")
+            image_link = components[component].get("image_link", "")
+            embedded = components[component].get("embedded", "")
+            embedded_path = components[component].get("embedded_path", "")
+            embedded_path_remote = components[component].get("embedded_path_remote", "")
 
             legacy[component] = {}
-            legacy[component]['changelog'] = changelog
-            legacy[component]['local_location'] = embedded_path
+            legacy[component]["changelog"] = changelog
+            legacy[component]["local_location"] = embedded_path
             if embedded:
-                legacy[component]['remote_location'] = embedded_path_remote
+                legacy[component]["remote_location"] = embedded_path_remote
             else:
-                legacy[component]['remote_location'] = remote_location
-            legacy[component]['updated_at'] = updated_at
-            legacy[component]['version'] = version
-            legacy[component]['visit_repo'] = visit_repo
-            legacy[component]['resources'] = resources
+                legacy[component]["remote_location"] = remote_location
+            legacy[component]["updated_at"] = updated_at
+            legacy[component]["version"] = version
+            legacy[component]["visit_repo"] = visit_repo
+            legacy[component]["resources"] = resources
 
             data[component] = {}
-            data[component]['author'] = author
-            data[component]['version'] = version
-            data[component]['description'] = description
-            data[component]['image_link'] = image_link
-            data[component]['local_location'] = local_location
-            data[component]['remote_location'] = remote_location
-            data[component]['visit_repo'] = visit_repo
-            data[component]['changelog'] = changelog
-            data[component]['resources'] = resources
-            data[component]['embedded'] = embedded
-            data[component]['embedded_path'] = embedded_path
-            data[component]['embedded_path_remote'] = embedded_path_remote
+            data[component]["author"] = author
+            data[component]["version"] = version
+            data[component]["description"] = description
+            data[component]["image_link"] = image_link
+            data[component]["local_location"] = local_location
+            data[component]["remote_location"] = remote_location
+            data[component]["visit_repo"] = visit_repo
+            data[component]["changelog"] = changelog
+            data[component]["resources"] = resources
+            data[component]["embedded"] = embedded
+            data[component]["embedded_path"] = embedded_path
+            data[component]["embedded_path_remote"] = embedded_path_remote
 
         if self.push:
-            target = 'repos.json'
-            repo = self.github.get_repo(organisation + '/information')
+            target = "repos.json"
+            repo = self.github.get_repo(organisation + "/information")
             repos_json = repo.get_contents(target)
             old = json.loads(repos_json.decoded_content.decode())
             sha = repos_json.sha
@@ -101,15 +99,15 @@ class CreateJson():
                 if has_changed(old, raw):
                     print(repo.update_file(target, msg, legacy, sha))
                 else:
-                    print('content did not change')
+                    print("content did not change")
             except UnknownObjectException:
                 message = "You do not have premissions to push to {}/{}"
-                print(message.format(organisation + '/information'))
+                print(message.format(organisation + "/information"))
             except Exception as error:  # pylint: disable=W0703
                 print("Something went horrible wrong :(")
                 print(error)
-            target = 'custom-component-store/V1/data.json'
-            repo = self.github.get_repo('ludeeus/data')
+            target = "custom-component-store/V1/data.json"
+            repo = self.github.get_repo("ludeeus/data")
             repos_json = repo.get_contents(target)
             old = json.loads(repos_json.decoded_content.decode())
             sha = repos_json.sha
@@ -123,7 +121,7 @@ class CreateJson():
                 if has_changed(old, raw):
                     print(repo.update_file(target, msg, data, sha))
                 else:
-                    print('content did not change')
+                    print("content did not change")
             except UnknownObjectException:
                 message = "You do not have premissions to push to ludeeus/data"
                 print(message)
@@ -142,7 +140,7 @@ class CreateJson():
         from customjson.cards.maykar import get_data as maykar
         from customjson.cards.thomasloven import get_data as thomasloven
 
-        organisation = 'custom-cards'
+        organisation = "custom-cards"
         data = {}
 
         cards = org(self.github, self.repo)
@@ -166,8 +164,8 @@ class CreateJson():
             data[card] = cards[card]
 
         if self.push:
-            target = 'repos.json'
-            repo = self.github.get_repo(organisation + '/information')
+            target = "repos.json"
+            repo = self.github.get_repo(organisation + "/information")
             repos_json = repo.get_contents(target)
             sha = repos_json.sha
             msg = random.choice(COMMIT)
@@ -190,17 +188,19 @@ class CreateJson():
                 if has_changed(old, raw):
                     print(repo.update_file(target, msg, data, sha))
                 else:
-                    print('content did not change')
+                    print("content did not change")
             except UnknownObjectException:
                 message = "You do not have premissions to push to {}/{}"
-                print(message.format(organisation + '/information'))
+                print(message.format(organisation + "/information"))
             except Exception as error:  # pylint: disable=W0703
                 print("Something went horrible wrong :(")
                 print(error)
         else:
             print(json.dumps(data, indent=4, sort_keys=True))
 
+
 def has_changed(old, new):
     """Return bool if content has changed."""
     import dictdiffer
+
     return bool(list(dictdiffer.diff(old, new)))

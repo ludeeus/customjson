@@ -3,20 +3,17 @@ import requests
 from customjson.defaults import REUSE, BLACKLIST, DOMAINS
 
 
-BASE = 'https://raw.githubusercontent.com/{}/master/'
+BASE = "https://raw.githubusercontent.com/{}/master/"
 JSONFILES = [
     {
-        'repository': 'pnbruckner/homeassistant-config',
-        'jsonfile': 'custom_components.json'
+        "repository": "pnbruckner/homeassistant-config",
+        "jsonfile": "custom_components.json",
     },
+    {"repository": "robmarkcole/Hue-sensors-HASS", "jsonfile": "custom_updater.json"},
     {
-        'repository': 'robmarkcole/Hue-sensors-HASS',
-        'jsonfile': 'custom_updater.json'
+        "repository": "claytonjn/hass-circadian_lighting",
+        "jsonfile": "custom_updater.json",
     },
-    {
-        'repository': 'claytonjn/hass-circadian_lighting',
-        'jsonfile': 'custom_updater.json'
-    }
 ]
 
 
@@ -25,11 +22,11 @@ def get_data(github):
     data = {}
     try:
         for entry in JSONFILES:
-            repository = entry['repository']
-            jsonfile = entry['jsonfile']
-            username = repository.split('/')[0]
-            reponame = repository.split('/')[1]
-            jsondata = requests.get(BASE.format(repository)+jsonfile).json()
+            repository = entry["repository"]
+            jsonfile = entry["jsonfile"]
+            username = repository.split("/")[0]
+            reponame = repository.split("/")[1]
+            jsondata = requests.get(BASE.format(repository) + jsonfile).json()
             components = []
             for component in jsondata:
                 if component not in BLACKLIST:
@@ -38,40 +35,41 @@ def get_data(github):
             for component in components:
                 try:
                     name = component
-                    if '.' in name:
-                        if name.split('.')[0] not in DOMAINS:
+                    if "." in name:
+                        if name.split(".")[0] not in DOMAINS:
                             continue
                     repo = github.get_repo(repository)
-                    print("Generating json for:", "{}/{}".format(
-                        repository, name))
+                    print("Generating json for:", "{}/{}".format(repository, name))
 
-                    local_location = jsondata[name]['local_location']
-                    version = jsondata[name]['version']
-                    updated_at = jsondata[name]['updated_at']
-                    changelog = jsondata[name]['changelog']
-                    remote_location = jsondata[name]['remote_location']
-                    resources = jsondata[name].get('resources', [])
+                    local_location = jsondata[name]["local_location"]
+                    version = jsondata[name]["version"]
+                    updated_at = jsondata[name]["updated_at"]
+                    changelog = jsondata[name]["changelog"]
+                    remote_location = jsondata[name]["remote_location"]
+                    resources = jsondata[name].get("resources", [])
 
-                    locationformat = 'custom_components/{}/{}.py'
-                    if '.' in name:
+                    locationformat = "custom_components/{}/{}.py"
+                    if "." in name:
                         embedded_path = locationformat.format(
-                            name.split('.')[1], name.split('.')[0])
+                            name.split(".")[1], name.split(".")[0]
+                        )
                     else:
                         embedded_path = local_location[-1:]
 
                     embedded_path_remote = remote_location
                     try:
-                        domain = name.split('.')[0]
-                        platfrom = name.split('.')[1]
-                        path = remote_location.split('/')
+                        domain = name.split(".")[0]
+                        platfrom = name.split(".")[1]
+                        path = remote_location.split("/")
                         searchstr = "{}/{}".format(path[-2], path[-1])
                         replacestr = "{}/{}.py".format(platfrom, domain)
                         embedded_path_remote = remote_location.replace(
-                            searchstr, replacestr)
+                            searchstr, replacestr
+                        )
                     except Exception:  # pylint: disable=W0703
                         pass
 
-                    embedded_path = embedded_path_remote.split('/master/')[1]
+                    embedded_path = embedded_path_remote.split("/master/")[1]
 
                     try:
                         repo.get_file_contents(embedded_path)
@@ -80,28 +78,29 @@ def get_data(github):
                         embedded = False
 
                     description = requests.get(remote_location).text
-                    description = description.split('\n')
-                    description = description[1] + ' ' + description[2]
+                    description = description.split("\n")
+                    description = description[1] + " " + description[2]
 
                     author = {}
-                    author['login'] = username
-                    author['html_url'] = 'https://github.com/' + username
-                    visit_repo = 'https://github.com/' + repository
+                    author["login"] = username
+                    author["html_url"] = "https://github.com/" + username
+                    visit_repo = "https://github.com/" + repository
 
                     data[name] = {}
-                    data[name]['author'] = author
-                    data[name]['updated_at'] = updated_at
-                    data[name]['description'] = description
-                    data[name]['version'] = version
-                    data[name]['local_location'] = local_location
-                    data[name]['remote_location'] = remote_location
-                    data[name]['visit_repo'] = visit_repo
-                    data[name]['changelog'] = changelog
-                    data[name]['resources'] = resources
-                    data[name]['embedded'] = embedded
-                    data[name]['embedded_path'] = '/{}'.format(embedded_path)
-                    data[name]['embedded_path_remote'] = REUSE.format(
-                        username, reponame, embedded_path)
+                    data[name]["author"] = author
+                    data[name]["updated_at"] = updated_at
+                    data[name]["description"] = description
+                    data[name]["version"] = version
+                    data[name]["local_location"] = local_location
+                    data[name]["remote_location"] = remote_location
+                    data[name]["visit_repo"] = visit_repo
+                    data[name]["changelog"] = changelog
+                    data[name]["resources"] = resources
+                    data[name]["embedded"] = embedded
+                    data[name]["embedded_path"] = "/{}".format(embedded_path)
+                    data[name]["embedded_path_remote"] = REUSE.format(
+                        username, reponame, embedded_path
+                    )
                 except Exception as error:  # pylint: disable=W0703
                     print(error)
     except Exception as error:  # pylint: disable=W0703
