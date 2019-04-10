@@ -24,8 +24,6 @@ class CreateJson():
         from customjson.components.custom_updater import (
             get_data as custom_updater)
 
-        update_pending = self.customjson_update_pending()
-
         organisation = 'custom-components'
         data = {}
 
@@ -100,13 +98,10 @@ class CreateJson():
                 print("no data")
                 return
             try:
-                if not update_pending:
-                    if has_changed(old, raw):
-                        print(repo.update_file(target, msg, legacy, sha))
-                    else:
-                        print('content did not change')
+                if has_changed(old, raw):
+                    print(repo.update_file(target, msg, legacy, sha))
                 else:
-                    print("You need to update 'customjson' before pushing.")
+                    print('content did not change')
             except UnknownObjectException:
                 message = "You do not have premissions to push to {}/{}"
                 print(message.format(organisation + '/information'))
@@ -125,13 +120,10 @@ class CreateJson():
                 print("no data")
                 return
             try:
-                if not update_pending:
-                    if has_changed(old, raw):
-                        print(repo.update_file(target, msg, data, sha))
-                    else:
-                        print('content did not change')
+                if has_changed(old, raw):
+                    print(repo.update_file(target, msg, data, sha))
                 else:
-                    print("You need to update 'customjson' before pushing.")
+                    print('content did not change')
             except UnknownObjectException:
                 message = "You do not have premissions to push to ludeeus/data"
                 print(message)
@@ -149,8 +141,6 @@ class CreateJson():
         from customjson.cards.isabellaalstrom import get_isabellaalstrom
         from customjson.cards.maykar import get_data as maykar
         from customjson.cards.thomasloven import get_data as thomasloven
-
-        update_pending = self.customjson_update_pending()
 
         organisation = 'custom-cards'
         data = {}
@@ -196,14 +186,11 @@ class CreateJson():
                 print("no data")
                 return
             try:
-                if not update_pending:
-                    old = json.loads(repos_json.decoded_content.decode())
-                    if has_changed(old, raw):
-                        print(repo.update_file(target, msg, data, sha))
-                    else:
-                        print('content did not change')
+                old = json.loads(repos_json.decoded_content.decode())
+                if has_changed(old, raw):
+                    print(repo.update_file(target, msg, data, sha))
                 else:
-                    print("You need to update 'customjson' before pushing.")
+                    print('content did not change')
             except UnknownObjectException:
                 message = "You do not have premissions to push to {}/{}"
                 print(message.format(organisation + '/information'))
@@ -212,26 +199,6 @@ class CreateJson():
                 print(error)
         else:
             print(json.dumps(data, indent=4, sort_keys=True))
-
-    def customjson_update_pending(self):
-        """Check version for this tool."""
-        from customjson.version import __version__
-        update_pending = False
-        version = __version__
-        repo = self.github.get_repo('ludeeus/customjson')
-        releases = list(repo.get_releases())
-        for release in releases:
-            version = release.tag_name
-            if version is None:
-                pass
-            elif 'untagged' in version:
-                pass
-            else:
-                break
-        if version != __version__:
-            update_pending = True
-        return update_pending
-
 
 def has_changed(old, new):
     """Return bool if content has changed."""
