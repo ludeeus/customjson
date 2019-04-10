@@ -66,25 +66,25 @@ def get_data(github, selected_repos):
                     pass
 
                 try:
-                    if release and release.tag_name is not None:
-                        version = release.tag_name
+                    if embedded:
+                        path = embedded_path
                     else:
-                        version = None
+                        path = location
+                    content = repo.get_file_contents(path)
+                    content = content.decoded_content.decode().split("\n")
+                    for line in content:
+                        if "_version_" in line or "VERSION" in line:
+                            version = line.split(" = ")[1].replace("'", "")
+                            break
                 except Exception:  # pylint: disable=W0703
                     version = None
 
                 if version is None:
                     try:
-                        if embedded:
-                            path = embedded_path
+                        if release and release.tag_name is not None:
+                            version = release.tag_name
                         else:
-                            path = location
-                        content = repo.get_file_contents(path)
-                        content = content.decoded_content.decode().split("\n")
-                        for line in content:
-                            if "_version_" in line or "VERSION" in line:
-                                version = line.split(" = ")[1].replace("'", "")
-                                break
+                            version = None
                     except Exception:  # pylint: disable=W0703
                         version = None
 
