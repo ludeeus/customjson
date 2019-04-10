@@ -7,7 +7,7 @@ def get_isabellaalstrom(github, selected_repos):
     org = 'isabellaalstrom'
     data = {}
     repos = []
-    all_repos = ['krisinfo-card']
+    all_repos = ['krisinfo-card', 'pollenkoll-card']
     if selected_repos:
         for repo in selected_repos:
             if repo in all_repos:
