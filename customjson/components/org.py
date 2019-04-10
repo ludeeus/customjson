@@ -1,4 +1,5 @@
 """Generate json form custom-components org."""
+import json
 from customjson.defaults import REUSE, VISIT, BLACKLIST
 
 
@@ -56,10 +57,10 @@ def get_data(github, selected_repos):
                 version = None
 
                 try:
-                    resources = (
-                        repo.get_file_contents("resources.json")
-                        .decoded_content.decode()
-                        .replace("\n", "")
+                    resources = json.loads(
+                        repo.get_file_contents(
+                            "resources.json"
+                        ).decoded_content.decode()
                     )
                 except Exception:  # pylint: disable=W0703
                     pass
