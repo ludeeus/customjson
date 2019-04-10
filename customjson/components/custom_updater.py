@@ -53,8 +53,11 @@ def get_data(github):
                     resources = jsondata[name].get('resources', [])
 
                     locationformat = 'custom_components/{}/{}.py'
-                    embedded_path = locationformat.format(
-                        name.split('.')[1], name.split('.')[0])
+                    if '.' in name:
+                        embedded_path = locationformat.format(
+                            name.split('.')[1], name.split('.')[0])
+                    else:
+                        embedded_path = local_location[-1:]
 
                     embedded_path_remote = remote_location
                     try:
