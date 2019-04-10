@@ -47,20 +47,35 @@ def get_data(github, selected_repos):
                         location = location.format(name)
                         embedded_path = location
 
-                version = None  # reset
                 try:
-                    if embedded:
-                        path = embedded_path
+                    release = list(repo.get_releases())[0]
+                except Exception:  # pylint: disable=W0703
+                    release = None
+
+                version = None
+
+                try:
+                    if release and release.tag_name is not None:
+                        version = release.tag_name
                     else:
-                        path = location
-                    content = repo.get_file_contents(path)
-                    content = content.decoded_content.decode().split("\n")
-                    for line in content:
-                        if "_version_" in line or "VERSION" in line:
-                            version = line.split(" = ")[1].replace("'", "")
-                            break
+                        version = None
                 except Exception:  # pylint: disable=W0703
                     version = None
+
+                if version is None:
+                    try:
+                        if embedded:
+                            path = embedded_path
+                        else:
+                            path = location
+                        content = repo.get_file_contents(path)
+                        content = content.decoded_content.decode().split("\n")
+                        for line in content:
+                            if "_version_" in line or "VERSION" in line:
+                                version = line.split(" = ")[1].replace("'", "")
+                                break
+                    except Exception:  # pylint: disable=W0703
+                        version = None
 
                 try:
                     releases = list(repo.get_releases())
