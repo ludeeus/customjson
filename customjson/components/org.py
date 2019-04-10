@@ -19,6 +19,7 @@ def get_data(github, selected_repos):
             if repo.name not in BLACKLIST and not repo.archived:
                 print("Generating json for:", "{}/{}".format(org, repo.name))
                 name = repo.name
+
                 resources = []
                 updated_at = repo.updated_at.isoformat().split("T")[0]
                 if "." in name:
@@ -53,6 +54,15 @@ def get_data(github, selected_repos):
                     release = None
 
                 version = None
+
+                try:
+                    resources = (
+                        repo.get_file_contents("resources.json")
+                        .decoded_content.decode()
+                        .replace("\n", "")
+                    )
+                except Exception:  # pylint: disable=W0703
+                    pass
 
                 try:
                     if release and release.tag_name is not None:
