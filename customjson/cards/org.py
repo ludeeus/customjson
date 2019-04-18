@@ -9,8 +9,7 @@ def get_data(github, selected_repos):
     data = {}
     repos = []
     if selected_repos:
-        for repo in selected_repos:
-            repos.append(repo)
+        repos.append(selected_repos)
     else:
         for repo in list(github.get_user(org).get_repos()):
             repos.append(repo.name)
