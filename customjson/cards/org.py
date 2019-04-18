@@ -76,6 +76,6 @@ def get_data(github, selected_repos):
                 data[name]["remote_location"] = remote_location
                 data[name]["visit_repo"] = visit_repo
                 data[name]["changelog"] = changelog
-        except Exception:  # pylint: disable=W0703
-            pass
+        except Exception as error:  # pylint: disable=W0703
+            print(error)
     return data
