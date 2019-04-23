@@ -14,6 +14,7 @@ JSONFILES = [
         "repository": "claytonjn/hass-circadian_lighting",
         "jsonfile": "custom_updater.json",
     },
+    {"repository": "StyraHem/hass", "jsonfile": "custom_updater.json"},
 ]
 
 
