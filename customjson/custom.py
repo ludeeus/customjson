@@ -34,7 +34,7 @@ class CreateJson:
         for component in components:
             data[component] = components[component]
 
-        components = custom_updater(self.github)
+        components = custom_updater()
         for component in components:
             data[component] = components[component]
 
