@@ -17,7 +17,7 @@ JSONFILES = [
     {"repository": "StyraHem/hass", "jsonfile": "custom_updater.json"},
     {
         "repository": "nikrolls/homeassistant-goldair-climate",
-        "jsonfile": "custom_updater.json"
+        "jsonfile": "custom_updater.json",
     },
 ]
 
@@ -43,12 +43,12 @@ def get_data():
                         if name.split(".")[0] not in DOMAINS:
                             continue
                     print("Generating json for:", "{}/{}".format(repository, name))
-                    version = jsondata[name]["version"]
-                    updated_at = jsondata[name]["updated_at"]
-                    local_location = jsondata[name]["local_location"]
-                    remote_location = jsondata[name]["remote_location"]
-                    visit_repo = jsondata[name]["visit_repo"]
-                    changelog = jsondata[name]["changelog"]
+                    version = jsondata[name].get("version")
+                    updated_at = jsondata[name].get("updated_at")
+                    local_location = jsondata[name].get("local_location")
+                    remote_location = jsondata[name].get("remote_location")
+                    visit_repo = jsondata[name].get("visit_repo")
+                    changelog = jsondata[name].get("changelog")
                     resources = jsondata[name].get("resources", [])
 
                     embedded = True
