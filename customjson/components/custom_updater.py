@@ -15,6 +15,10 @@ JSONFILES = [
         "jsonfile": "custom_updater.json",
     },
     {"repository": "StyraHem/hass", "jsonfile": "custom_updater.json"},
+    {
+        "repository": "nikrolls/homeassistant-goldair-climate",
+        "jsonfile": "custom_updater.json"
+    },
 ]
 
 
