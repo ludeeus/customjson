@@ -3,5 +3,6 @@ include
 lib*
 share
 pyvenv.cfg
+Scripts
 *egg*
 __pycache__
