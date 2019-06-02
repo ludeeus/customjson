@@ -14,7 +14,7 @@ JSONFILES = [
         "repository": "claytonjn/hass-circadian_lighting",
         "jsonfile": "custom_updater.json",
     },
-    {"repository": "StyraHem/hass", "jsonfile": "custom_updater.json"},
+    {"repository": "StyraHem/Shelly4HASS", "jsonfile": "custom_updater.json"},
     {
         "repository": "nikrolls/homeassistant-goldair-climate",
         "jsonfile": "custom_updater.json",
